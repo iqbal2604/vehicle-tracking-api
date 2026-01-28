@@ -1,14 +1,14 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/iqbal2604/vehicle-tracking-api/routes"
+)
 
 func main() {
 	app := fiber.New()
 
-	app.Get("/ping", func(c *fiber.Ctx) error {
-		return c.SendString("Ping")
-
-	})
+	routes.SetupRoutes(app)
 
 	err := app.Listen("localhost:3000")
 	if err != nil {
