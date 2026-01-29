@@ -5,6 +5,7 @@ import (
 
 	"github.com/iqbal2604/vehicle-tracking-api/models"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct {
@@ -22,10 +23,15 @@ func (s *UserService) Register(name, email, password string) error {
 		return errors.New("Email Already Registered")
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
 	user := models.User{
 		Name:     name,
 		Email:    email,
-		Password: password,
+		Password: string(hashedPassword),
 	}
 
 	return s.repo.Create(&user)
