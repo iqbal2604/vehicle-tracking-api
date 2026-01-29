@@ -1,24 +1,25 @@
 package config
 
 import (
-	"database/sql"
-	"log"
-	"time"
-
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/iqbal2604/vehicle-tracking-api/helper"
+	"github.com/iqbal2604/vehicle-tracking-api/models"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-func ConnectDatabase() *sql.DB {
-	db, err := sql.Open("mysql", "root@tcp(localhost:3306)/vehicle-tracking")
-	helper.PanicIfError(err)
+var DB *gorm.DB
 
-	db.SetConnMaxIdleTime(10 * time.Minute)
-	db.SetConnMaxLifetime(60 * time.Minute)
-	db.SetMaxIdleConns(5)
-	db.SetMaxOpenConns(20)
+func ConnectDatabase() error {
+	dsn := "root@tcp(localhost:3306)/vehicle_tracking?charset=utf8mb4&parseTime=True&loc=Local"
 
-	log.Println(db, "Database Successfully CONNECTED")
-	return db
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		return err
+	}
+
+	DB = db
+
+	DB.AutoMigrate(&models.User{})
+	return nil
 
 }
