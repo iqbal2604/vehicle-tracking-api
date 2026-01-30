@@ -39,9 +39,18 @@ func (s *UserService) Register(name, email, password string) error {
 
 func (s *UserService) Login(email, password string) error {
 
-	_, err := s.repo.FindByEmail(email)
+	user, err := s.repo.FindByEmail(email)
 	if err != nil {
 		return errors.New("Email Not Found")
+	}
+
+	err = bcrypt.CompareHashAndPassword(
+		[]byte(user.Password),
+		[]byte(password),
+	)
+
+	if err != nil {
+		return errors.New("Wrong Password")
 	}
 	return nil
 }

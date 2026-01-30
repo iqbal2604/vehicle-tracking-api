@@ -37,6 +37,11 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	if err := c.BodyParser(&req); err != nil {
 		return helpers.ErrorResponse(c, 400, "Invalid Request")
 	}
-	return c.JSON(req)
+
+	if err := h.service.Login(req.Email, req.Password); err != nil {
+		return helpers.ErrorResponse(c, 400, err.Error())
+	}
+
+	return helpers.SuccessResponse(c, "Login Success")
 
 }
