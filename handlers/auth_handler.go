@@ -30,3 +30,13 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 
 	return helpers.SuccessResponse(c, "Register Success")
 }
+
+func (h *AuthHandler) Login(c *fiber.Ctx) error {
+	var req requests.LoginRequest
+
+	if err := c.BodyParser(&req); err != nil {
+		return helpers.ErrorResponse(c, 400, "Invalid Request")
+	}
+	return c.JSON(req)
+
+}

@@ -36,3 +36,12 @@ func (s *UserService) Register(name, email, password string) error {
 
 	return s.repo.Create(&user)
 }
+
+func (s *UserService) Login(email, password string) error {
+
+	_, err := s.repo.FindByEmail(email)
+	if err != nil {
+		return errors.New("Email Not Found")
+	}
+	return nil
+}
