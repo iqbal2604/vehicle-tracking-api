@@ -24,6 +24,7 @@ func main() {
 	authHandler := handlers.NewAuthHandler(userService)
 
 	routes.AuthRoutes(app, authHandler)
+	routes.ProtectedRoutes(app)
 
 	app.Get("/ping", func(c *fiber.Ctx) error {
 		return c.SendString("pong")

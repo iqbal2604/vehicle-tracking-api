@@ -34,9 +34,20 @@ func JWTMiddleware() fiber.Handler {
 
 		if err != nil || !token.Valid {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "Invalid token",
+				"error": "Invalid Token",
 			})
 		}
+
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Invalid token claims",
+			})
+		}
+
+		userID := claims["user_id"]
+		c.Locals("user_id", userID)
+
 		return c.Next()
 	}
 }
