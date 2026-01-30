@@ -38,10 +38,14 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Request")
 	}
 
-	if err := h.service.Login(req.Email, req.Password); err != nil {
+	token, err := h.service.Login(req.Email, req.Password)
+	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
 
-	return helpers.SuccessResponse(c, "Login Success")
+	return helpers.SuccessResponse(c, fiber.Map{
+		"message": "Login Success",
+		"token":   token,
+	})
 
 }

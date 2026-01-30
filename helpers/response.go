@@ -8,8 +8,6 @@ func ErrorResponse(c *fiber.Ctx, status int, message string) error {
 	})
 }
 
-func SuccessResponse(c *fiber.Ctx, message string) error {
-	return c.JSON(fiber.Map{
-		"message": message,
-	})
+func SuccessResponse(c *fiber.Ctx, data interface{}) error {
+	return c.JSON(data)
 }

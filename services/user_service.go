@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 
+	"github.com/iqbal2604/vehicle-tracking-api/helpers"
 	"github.com/iqbal2604/vehicle-tracking-api/models"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"golang.org/x/crypto/bcrypt"
@@ -37,11 +38,11 @@ func (s *UserService) Register(name, email, password string) error {
 	return s.repo.Create(&user)
 }
 
-func (s *UserService) Login(email, password string) error {
+func (s *UserService) Login(email, password string) (string, error) {
 
 	user, err := s.repo.FindByEmail(email)
 	if err != nil {
-		return errors.New("Email Not Found")
+		return "", errors.New("Email Not Found")
 	}
 
 	err = bcrypt.CompareHashAndPassword(
@@ -50,7 +51,12 @@ func (s *UserService) Login(email, password string) error {
 	)
 
 	if err != nil {
-		return errors.New("Wrong Password")
+		return "", errors.New("Wrong Password")
 	}
-	return nil
+
+	token, err := helpers.GenerateToken(user.ID)
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }
