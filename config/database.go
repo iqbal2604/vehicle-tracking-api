@@ -23,3 +23,7 @@ func ConnectDatabase() error {
 	return nil
 
 }
+
+func NewDatabase() *gorm.DB {
+	return DB
+}

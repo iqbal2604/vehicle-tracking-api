@@ -11,3 +11,7 @@ func ErrorResponse(c *fiber.Ctx, status int, message string) error {
 func SuccessResponse(c *fiber.Ctx, data interface{}) error {
 	return c.JSON(data)
 }
+
+func Error(c *fiber.Ctx, data interface{}) error {
+	return c.JSON(data)
+}
