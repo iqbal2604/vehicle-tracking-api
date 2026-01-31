@@ -19,7 +19,8 @@ func main() {
 
 	app := fiber.New()
 
-	userRepo := &repositories.UserRepository{}
+	db := config.NewDatabase()
+	userRepo := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepo)
 	authHandler := handlers.NewAuthHandler(userService)
 
