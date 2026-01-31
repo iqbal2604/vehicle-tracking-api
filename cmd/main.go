@@ -23,13 +23,11 @@ func main() {
 	userRepo := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepo)
 	authHandler := handlers.NewAuthHandler(userService)
+	userHandler := handlers.NewUserHandler(userService)
 
 	routes.AuthRoutes(app, authHandler)
+	routes.UserRoutes(app, userHandler)
 	routes.ProtectedRoutes(app)
-
-	app.Get("/ping", func(c *fiber.Ctx) error {
-		return c.SendString("pong")
-	})
 
 	app.Listen("localhost:3000")
 }

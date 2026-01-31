@@ -24,3 +24,17 @@ func (h *UserHandler) Profile(c *fiber.Ctx) error {
 
 	return helpers.SuccessResponse(c, user)
 }
+
+func (h *UserHandler) GetProfile(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+
+	user, err := h.service.GetProfile(userID)
+	if err != nil {
+		return helpers.ErrorResponse(c, 400, "User not found")
+	}
+
+	return helpers.SuccessResponse(c, fiber.Map{
+		"message": "Profile retrieved",
+		"data":    user,
+	})
+}

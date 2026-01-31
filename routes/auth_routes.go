@@ -21,3 +21,8 @@ func ProtectedRoutes(app *fiber.App) {
 		})
 	})
 }
+
+func UserRoutes(app *fiber.App, userHandler *handlers.UserHandler) {
+	// Apply JWT middleware directly to specific route
+	app.Get("/api/profile", middlewares.JWTMiddleware(), userHandler.GetProfile)
+}

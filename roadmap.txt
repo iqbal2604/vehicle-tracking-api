@@ -1,0 +1,24 @@
+Roadmap Project Vehicle Tracking System
+Backend: Golang + Fiber + MySQL + JWT + Clean Architecture
+1. Project Setup (SELESAI) - Init Go Module - Install Fiber -
+Struktur folder clean architecture - Config database - Setup
+GORM
+2. Database Design (SEBAGIAN) - Tabel users (selesai) - Tabel
+vehicles - Tabel gps_logs
+3. Authentication System (SELESAI) - Register - Hash password -
+Login - JWT Generate - JWT Middleware - Protected Route
+4. User Profile (SEDANG DIKERJAKAN) - Get user from token -
+Repository FindByID - Service GetProfile - Handler Profile - Route
+/api/profile
+5. Vehicle Management (CRUD) - Create vehicle - List vehicle -
+Update vehicle - Delete vehicle
+6. GPS Tracking Core - Endpoint kirim koordinat - Simpan ke
+database - Validasi vehicle
+7. GPS History - Ambil histori per kendaraan - Filter tanggal
+8. Realtime Tracking (Optional) - WebSocket / SSE
+9. Authorization - User hanya akses miliknya
+10. Validation & Error Handling - Request validation - Global error
+format
+11. Testing - Unit test service & repository
+12. Deployment - Environment config - Build binary - VPS / Docker
+/ Cloud
