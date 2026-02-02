@@ -25,9 +25,13 @@ func main() {
 	authHandler := handlers.NewAuthHandler(userService)
 	userHandler := handlers.NewUserHandler(userService)
 
+	vehicleRepo := repositories.NewVehicleRepository(db)
+	vehicleService := services.NewVehicleService(vehicleRepo)
+	vehicleHandler := handlers.NewVehicleHandler(vehicleService)
+
+	routes.VehicleRoutes(app, vehicleHandler)
 	routes.AuthRoutes(app, authHandler)
 	routes.UserRoutes(app, userHandler)
-	routes.ProtectedRoutes(app)
 
 	app.Listen("localhost:3000")
 }

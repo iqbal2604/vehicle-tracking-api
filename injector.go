@@ -22,3 +22,13 @@ func InitializeUserHandler() *handlers.UserHandler {
 	)
 	return nil
 }
+
+func InitializeVehicleHandler() *handlers.VehicleHandler {
+	wire.Build(
+		config.NewDatabase,
+		repositories.NewVehicleRepository,
+		services.NewVehicleService,
+		handlers.NewVehicleHandler,
+	)
+	return nil
+}

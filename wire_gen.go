@@ -13,7 +13,7 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
 
-// Injectors from wire.go:
+// Injectors from injector.go:
 
 func InitializeUserHandler() *handlers.UserHandler {
 	db := config.NewDatabase()
@@ -21,4 +21,12 @@ func InitializeUserHandler() *handlers.UserHandler {
 	userService := services.NewUserService(userRepository)
 	userHandler := handlers.NewUserHandler(userService)
 	return userHandler
+}
+
+func InitializeVehicleHandler() *handlers.VehicleHandler {
+	db := config.NewDatabase()
+	vehicleRepository := repositories.NewVehicleRepository(db)
+	vehicleService := services.NewVehicleService(vehicleRepository)
+	vehicleHandler := handlers.NewVehicleHandler(vehicleService)
+	return vehicleHandler
 }

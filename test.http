@@ -10,8 +10,17 @@
 # GET  http://localhost:3000/api/protected/test
 # Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njk4NTIxMzcsInVzZXJfaWQiOjR9.C0kRmtEpLdFnrUioXBInyg2wNrxiRWFRZ-Mj3P4OhlA
 
-GET http://localhost:3000/api/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njk5NDE1NTgsInVzZXJfaWQiOjV9.eM7GaKYTXuyT6D8E3visZQRmmXuLEm6yLy2qKBj7QZk
+POST http://localhost:3000/api/vehicles
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAxMDU1MjYsInVzZXJfaWQiOjV9.7zmcs6ziub_iaPrC8FDagCDEJMgtQ7oeMx_sHd6nWuc
+Content-Type: application/json
+
+{
+    "name": "BMW",
+    "plate": "BK0001",
+    "type":"SuperCar",
+    "model":"BMW M6",
+    "color":"Red"
+}
 
 # POST http://localhost:3000/api/register
 # Accept: application/json
