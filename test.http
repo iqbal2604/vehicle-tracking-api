@@ -3,31 +3,40 @@
 # Content-Type: application/json
 
 # {
-#     "email":"bale@gmail.com",
+#     "email":"navia@gmail.com",
 #     "password":"secret"
 # }
 
 # GET  http://localhost:3000/api/protected/test
 # Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njk4NTIxMzcsInVzZXJfaWQiOjR9.C0kRmtEpLdFnrUioXBInyg2wNrxiRWFRZ-Mj3P4OhlA
 
-POST http://localhost:3000/api/vehicles
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAxMDU1MjYsInVzZXJfaWQiOjV9.7zmcs6ziub_iaPrC8FDagCDEJMgtQ7oeMx_sHd6nWuc
-Content-Type: application/json
+# POST http://localhost:3000/api/vehicles
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyNjIyMDgsInVzZXJfaWQiOjd9.Ft_x1BgdthMixF2m4lF5bgP2nb9CsL4Xl5uQORjxDUQ
+# Content-Type: application/json
 
-{
-    "name": "BMW",
-    "plate": "BK0001",
-    "type":"SuperCar",
-    "model":"BMW M6",
-    "color":"Red"
-}
+# {
+#     "name": "Ferrari",
+#     "plate": "BK0005",
+#     "type":"SuperCar",
+#     "model":"Ferrari",
+#     "color":"Black"
+# }
 
 # POST http://localhost:3000/api/register
 # Accept: application/json
 # Content-Type: application/json
 
 # {
-#     "name":"bale",
-#     "email":"bale@gmail.com",
+#     "name":"navia",
+#     "email":"navia@gmail.com",
 #     "password":"secret"
 # }
+
+GET http://localhost:3000/api/vehicles/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyNjIyMDgsInVzZXJfaWQiOjd9.Ft_x1BgdthMixF2m4lF5bgP2nb9CsL4Xl5uQORjxDUQ
+Content-Type: application/json
+
+
+# GET http://localhost:3000/api/profile
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyNTkzNzcsInVzZXJfaWQiOjV9.yiL_szq6muRbTbiWmQYhjLBCrEJN_Si9MPWguQ69ECY
+# Content-Type: application/json

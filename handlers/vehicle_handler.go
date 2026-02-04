@@ -36,13 +36,13 @@ func (h *VehicleHandler) CreateVehicle(c *fiber.Ctx) error {
 }
 
 func (h *VehicleHandler) GetVehicle(c *fiber.Ctx) error {
-	idParam := c.Params("id")
-	id, err := strconv.ParseUint(idParam, 10, 64)
+	userID := c.Locals("user_id").(uint)
+	id, err := strconv.ParseUint(c.Params("id"), 10, 64)
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, "Inalid ID")
 	}
 
-	v, err := h.service.GetVehicleByID(uint(id))
+	v, err := h.service.GetVehicleByID(userID, uint(id))
 	if err != nil {
 		return helpers.ErrorResponse(c, 404, "Vehicle Not Found")
 	}
@@ -62,12 +62,19 @@ func (h *VehicleHandler) ListVehicle(c *fiber.Ctx) error {
 }
 
 func (h *VehicleHandler) UpdateVehicle(c *fiber.Ctx) error {
+	idParam := c.Params("id")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		return helpers.ErrorResponse(c, 400, "Invalid ID")
+	}
 	userID := c.Locals("user_id").(uint)
 
 	var v models.Vehicle
 	if err := c.BodyParser(&v); err != nil {
 		return helpers.ErrorResponse(c, 400, "Invalid Payload")
 	}
+
+	v.ID = uint(id)
 
 	if err := h.service.UpdateVehicle(userID, &v); err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())

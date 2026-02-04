@@ -20,8 +20,8 @@ func (s *VehicleService) CreateVehicle(userID uint, v *models.Vehicle) error {
 	return s.repo.Create(v)
 }
 
-func (s *VehicleService) GetVehicleByID(id uint) (*models.Vehicle, error) {
-	return s.repo.FindByID(id)
+func (s *VehicleService) GetVehicleByID(userID uint, id uint) (*models.Vehicle, error) {
+	return s.repo.FindByID(userID, id)
 }
 
 func (s *VehicleService) ListVehiclesByUser(userID uint) ([]models.Vehicle, error) {
@@ -29,7 +29,7 @@ func (s *VehicleService) ListVehiclesByUser(userID uint) ([]models.Vehicle, erro
 }
 
 func (s *VehicleService) UpdateVehicle(userID uint, v *models.Vehicle) error {
-	existing, err := s.repo.FindByID(v.ID)
+	existing, err := s.repo.FindByID(userID, v.ID)
 	if err != nil {
 		return err
 	}
@@ -42,7 +42,7 @@ func (s *VehicleService) UpdateVehicle(userID uint, v *models.Vehicle) error {
 }
 
 func (s *VehicleService) DeleteVehicle(userID, id uint) error {
-	existing, err := s.repo.FindByID(id)
+	existing, err := s.repo.FindByID(userID, id)
 	if err != nil {
 		return err
 	}
@@ -51,5 +51,5 @@ func (s *VehicleService) DeleteVehicle(userID, id uint) error {
 		return errors.New("Unauthorized")
 	}
 
-	return s.repo.Delete(id)
+	return s.repo.Delete(userID, id)
 }

@@ -30,7 +30,7 @@ func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 
 func (r *UserRepository) FindByID(id uint) (*models.User, error) {
 	var user models.User
-	err := r.DB.First(&user, id).Error
+	err := r.DB.Preload("Vehicles").First(&user, id).Error
 	if err != nil {
 		return nil, err
 	}
