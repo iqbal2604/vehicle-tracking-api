@@ -9,5 +9,6 @@ type Vehicle struct {
 	Model  string
 	Color  string
 
-	User User `gorm:"foreignKey:UserID"`
+	User     User          `gorm:"foreignKey:UserID"`
+	Location []GPSLocation `gorm:"foreignKey:VehicleID"`
 }

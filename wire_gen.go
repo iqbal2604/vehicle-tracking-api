@@ -30,3 +30,12 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 	vehicleHandler := handlers.NewVehicleHandler(vehicleService)
 	return vehicleHandler
 }
+
+func InitializedGPSHandler() *handlers.GPSHandler {
+	db := config.NewDatabase()
+	gpsRepository := repositories.NewGPSRepository(db)
+	vehicleRepository := repositories.NewVehicleRepository(db)
+	gpsService := services.NewGPSService(gpsRepository, vehicleRepository)
+	gpsHandler := handlers.NewGPSHandler(gpsService)
+	return gpsHandler
+}

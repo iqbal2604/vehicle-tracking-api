@@ -20,18 +20,29 @@ func main() {
 	app := fiber.New()
 
 	db := config.NewDatabase()
+
+	//Repository
 	userRepo := repositories.NewUserRepository(db)
+	vehicleRepo := repositories.NewVehicleRepository(db)
+	gpsRepo := repositories.NewGPSRepository(db)
+	//Services
 	userService := services.NewUserService(userRepo)
+	vehicleService := services.NewVehicleService(vehicleRepo)
+	gpsService := services.NewGPSService(gpsRepo, vehicleRepo)
+	//Handlers
 	authHandler := handlers.NewAuthHandler(userService)
 	userHandler := handlers.NewUserHandler(userService)
-
-	vehicleRepo := repositories.NewVehicleRepository(db)
-	vehicleService := services.NewVehicleService(vehicleRepo)
 	vehicleHandler := handlers.NewVehicleHandler(vehicleService)
+	gpsHandler := handlers.NewGPSHandler(gpsService)
 
-	routes.VehicleRoutes(app, vehicleHandler)
-	routes.AuthRoutes(app, authHandler)
-	routes.UserRoutes(app, userHandler)
+	//Group
+	api := app.Group("/api")
+
+	//Routes
+	routes.VehicleRoutes(api, vehicleHandler)
+	routes.AuthRoutes(api, authHandler)
+	routes.UserRoutes(api, userHandler)
+	routes.GPSRoute(api, gpsHandler)
 
 	app.Listen("localhost:3000")
 }

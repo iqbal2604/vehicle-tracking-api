@@ -19,7 +19,7 @@ func ConnectDatabase() error {
 
 	DB = db
 
-	DB.AutoMigrate(&models.User{}, &models.Vehicle{})
+	DB.AutoMigrate(&models.User{}, &models.Vehicle{}, &models.GPSLocation{})
 	return nil
 
 }

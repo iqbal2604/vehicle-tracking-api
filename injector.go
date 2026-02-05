@@ -32,3 +32,15 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 	)
 	return nil
 }
+
+func InitializedGPSHandler() *handlers.GPSHandler {
+	wire.Build(
+		config.NewDatabase,
+		repositories.NewGPSRepository,
+		repositories.NewVehicleRepository,
+		services.NewGPSService,
+		handlers.NewGPSHandler,
+	)
+	return nil
+
+}

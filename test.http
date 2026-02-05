@@ -27,16 +27,31 @@
 # Content-Type: application/json
 
 # {
-#     "name":"navia",
-#     "email":"navia@gmail.com",
+#     "name":"Furina",
+#     "email":"Furina@gmail.com",
 #     "password":"secret"
 # }
 
-GET http://localhost:3000/api/vehicles/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyNjIyMDgsInVzZXJfaWQiOjd9.Ft_x1BgdthMixF2m4lF5bgP2nb9CsL4Xl5uQORjxDUQ
-Content-Type: application/json
+# GET http://localhost:3000/api/vehicles/
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODU3MTUsInVzZXJfaWQiOjd9.4vacyFISeC2QhTYDbqchkUlnLBIZ62EOGjP4NdzgWy8
+# Content-Type: application/json
 
 
 # GET http://localhost:3000/api/profile
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyNTkzNzcsInVzZXJfaWQiOjV9.yiL_szq6muRbTbiWmQYhjLBCrEJN_Si9MPWguQ69ECY
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODU3MTUsInVzZXJfaWQiOjd9.4vacyFISeC2QhTYDbqchkUlnLBIZ62EOGjP4NdzgWy8
 # Content-Type: application/json
+
+# POST http://localhost:3000/api/gps
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
+# Content-Type: application/json
+
+# {
+#     "vehicle_id": 4,
+#     "latitude": -10.3,
+#     "longitude": 200.8,
+#     "speed": 70.3
+# }
+
+GET http://localhost:3000/api/gps/last/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
+
