@@ -36,6 +36,7 @@ func (s *GPSService) CreateLocation(userID uint, loc *models.GPSLocation) error 
 
 	data, _ := json.Marshal(dtos.ToGPSResponse(*loc))
 	s.hub.Broadcast <- websocketpkg.WSMessage{
+		UserID:    userID,
 		VehicleID: loc.VehicleID,
 		Data:      data,
 	}

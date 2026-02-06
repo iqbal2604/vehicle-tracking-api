@@ -1,59 +1,84 @@
-# POST http://localhost:3000/api/login
-# Accept: application/json
-# Content-Type: application/json
-
-# {
-#     "email":"Furina@gmail.com",
-#     "password":"secret"
-# }
-
-# GET  http://localhost:3000/api/protected/test
-# Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njk4NTIxMzcsInVzZXJfaWQiOjR9.C0kRmtEpLdFnrUioXBInyg2wNrxiRWFRZ-Mj3P4OhlA
-
-# POST http://localhost:3000/api/vehicles
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0MzczMDQsInVzZXJfaWQiOjh9.AGeIJGVAB_saZNZLCFTQ_D2Zrbyghj-lV2ePnoCBJ44
-# Content-Type: application/json
-
-# {
-#     "name": "Vespa",
-#     "plate": "BK0008",
-#     "type":"Sepeda Motor",
-#     "model":"Honda",
-#     "color":"White"
-# }
-
+#REGISTER USER
 # POST http://localhost:3000/api/register
 # Accept: application/json
 # Content-Type: application/json
 
 # {
-#     "name":"Furina",
-#     "email":"Furina@gmail.com",
-#     "password":"secret"
+#     "name":"Muhammad Iqbal",
+#     "email":"mmuhammadiqbal963@gmail.com",
+#     "password":"duaenam042000"
 # }
 
-# GET http://localhost:3000/api/vehicles/
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
+
+# LOGIN USER
+# POST http://localhost:3000/api/login
+# Accept: application/json
 # Content-Type: application/json
 
+# {
+#     "email":"mmuhammadiqbal963@gmail.com",
+#     "password":"duaenam042000"
+# }
+
+
+
+#GET PROFILE USER
 
 # GET http://localhost:3000/api/profile
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0MzczMDQsInVzZXJfaWQiOjh9.AGeIJGVAB_saZNZLCFTQ_D2Zrbyghj-lV2ePnoCBJ44
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
 # Content-Type: application/json
 
+
+#POST VEHICLES
+
+# POST http://localhost:3000/api/vehicles
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
+# Content-Type: application/json
+
+# {
+#     "name": "Ferrari F1",
+#     "plate": "FR0001",
+#     "type":"Super CAR",
+#     "model":"Ferrari",
+#     "color":"RED"
+# }
+
+
+#GET VEHICLES
+
+# GET http://localhost:3000/api/vehicles/
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
+# Content-Type: application/json
+
+
+
+#POST GPS VEHICLES
+
 POST http://localhost:3000/api/gps
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0MzczMDQsInVzZXJfaWQiOjh9.AGeIJGVAB_saZNZLCFTQ_D2Zrbyghj-lV2ePnoCBJ44
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
 Content-Type: application/json
 
 {
-    "vehicle_id": 7,
-    "latitude": -177.3,
-    "longitude": 278.8,
-    "speed": 70.3
+    "vehicle_id": 10,
+    "latitude": -400.3,
+    "longitude": 400.8,
+    "speed": 300.3
 }
 
-# GET http://localhost:3000/api/gps/history/5
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
 
-# GET http://localhost:3000/api/gps/stream/4
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
+
+#GET HISTORY GPS
+
+# GET http://localhost:3000/api/gps/history/10
+# # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
+
+# GET LAST GPS
+
+# GET http://localhost:3000/api/gps/last/10
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
+
+
+#GET STREAM GPS
+
+# GET http://localhost:3000/api/gps/stream/10
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg

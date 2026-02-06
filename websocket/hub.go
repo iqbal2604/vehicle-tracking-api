@@ -9,6 +9,7 @@ type Hub struct {
 
 type WSMessage struct {
 	VehicleID uint
+	UserID    uint
 	Data      []byte
 }
 
@@ -33,7 +34,7 @@ func (h *Hub) Run() {
 
 		case message := <-h.Broadcast:
 			for client := range h.Clients {
-				if client.VehicleID == message.VehicleID {
+				if client.VehicleID == message.VehicleID && client.UserID == message.UserID {
 					client.Send <- message.Data
 				}
 			}

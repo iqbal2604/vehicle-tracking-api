@@ -19,7 +19,7 @@ func TestStream(t *testing.T) {
 	})
 
 	req := httptest.NewRequest(
-		http.MethodGet, "/api/gps/stream/4",
+		http.MethodGet, "/api/gps/stream/10",
 		nil,
 	)
 
