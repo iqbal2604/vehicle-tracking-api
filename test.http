@@ -47,9 +47,9 @@ Content-Type: application/json
 
 {
     "vehicle_id": 7,
-    "latitude": -162.3,
-    "longitude": 220.8,
-    "speed": 85.3
+    "latitude": -177.3,
+    "longitude": 278.8,
+    "speed": 70.3
 }
 
 # GET http://localhost:3000/api/gps/history/5

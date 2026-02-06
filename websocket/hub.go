@@ -4,7 +4,12 @@ type Hub struct {
 	Clients    map[*Client]bool
 	Register   chan *Client
 	Unregister chan *Client
-	Broadcast  chan []byte
+	Broadcast  chan WSMessage
+}
+
+type WSMessage struct {
+	VehicleID uint
+	Data      []byte
 }
 
 func NewHub() *Hub {
@@ -12,7 +17,7 @@ func NewHub() *Hub {
 		Clients:    make(map[*Client]bool),
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
-		Broadcast:  make(chan []byte),
+		Broadcast:  make(chan WSMessage),
 	}
 }
 
@@ -28,7 +33,9 @@ func (h *Hub) Run() {
 
 		case message := <-h.Broadcast:
 			for client := range h.Clients {
-				client.Send <- message
+				if client.VehicleID == message.VehicleID {
+					client.Send <- message.Data
+				}
 			}
 		}
 	}
