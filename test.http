@@ -3,7 +3,7 @@
 # Content-Type: application/json
 
 # {
-#     "email":"navia@gmail.com",
+#     "email":"Furina@gmail.com",
 #     "password":"secret"
 # }
 
@@ -11,15 +11,15 @@
 # Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Njk4NTIxMzcsInVzZXJfaWQiOjR9.C0kRmtEpLdFnrUioXBInyg2wNrxiRWFRZ-Mj3P4OhlA
 
 # POST http://localhost:3000/api/vehicles
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyNjIyMDgsInVzZXJfaWQiOjd9.Ft_x1BgdthMixF2m4lF5bgP2nb9CsL4Xl5uQORjxDUQ
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0MzczMDQsInVzZXJfaWQiOjh9.AGeIJGVAB_saZNZLCFTQ_D2Zrbyghj-lV2ePnoCBJ44
 # Content-Type: application/json
 
 # {
-#     "name": "Ferrari",
-#     "plate": "BK0005",
-#     "type":"SuperCar",
-#     "model":"Ferrari",
-#     "color":"Black"
+#     "name": "Vespa",
+#     "plate": "BK0008",
+#     "type":"Sepeda Motor",
+#     "model":"Honda",
+#     "color":"White"
 # }
 
 # POST http://localhost:3000/api/register
@@ -33,25 +33,27 @@
 # }
 
 # GET http://localhost:3000/api/vehicles/
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODU3MTUsInVzZXJfaWQiOjd9.4vacyFISeC2QhTYDbqchkUlnLBIZ62EOGjP4NdzgWy8
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
 # Content-Type: application/json
 
 
 # GET http://localhost:3000/api/profile
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODU3MTUsInVzZXJfaWQiOjd9.4vacyFISeC2QhTYDbqchkUlnLBIZ62EOGjP4NdzgWy8
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0MzczMDQsInVzZXJfaWQiOjh9.AGeIJGVAB_saZNZLCFTQ_D2Zrbyghj-lV2ePnoCBJ44
 # Content-Type: application/json
 
-# POST http://localhost:3000/api/gps
+POST http://localhost:3000/api/gps
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0MzczMDQsInVzZXJfaWQiOjh9.AGeIJGVAB_saZNZLCFTQ_D2Zrbyghj-lV2ePnoCBJ44
+Content-Type: application/json
+
+{
+    "vehicle_id": 7,
+    "latitude": -162.3,
+    "longitude": 220.8,
+    "speed": 85.3
+}
+
+# GET http://localhost:3000/api/gps/history/5
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
-# Content-Type: application/json
 
-# {
-#     "vehicle_id": 4,
-#     "latitude": -10.3,
-#     "longitude": 200.8,
-#     "speed": 70.3
-# }
-
-GET http://localhost:3000/api/gps/last/4
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho
-
+# GET http://localhost:3000/api/gps/stream/4
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzAyODg5MjUsInVzZXJfaWQiOjd9.CK_EfUg6EUpIIRPjKgJW-BeeESKE6XrWeAPpQtMikho

@@ -12,5 +12,5 @@ func GPSRoute(router fiber.Router, gpsHandler *handlers.GPSHandler) {
 	protected.Post("/", gpsHandler.CreateLocation)
 	protected.Get("/history/:vehicle_id", gpsHandler.GetHistory)
 	protected.Get("/last/:vehicle_id", gpsHandler.GetLastLocation)
-
+	protected.Get("/stream/:vehicle_id", gpsHandler.StreamLocation)
 }

@@ -11,6 +11,7 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/handlers"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
+	"github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
 
 func InitializeUserHandler() *handlers.UserHandler {
@@ -35,11 +36,13 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 
 func InitializedGPSHandler() *handlers.GPSHandler {
 	wire.Build(
+
 		config.NewDatabase,
 		repositories.NewGPSRepository,
 		repositories.NewVehicleRepository,
 		services.NewGPSService,
 		handlers.NewGPSHandler,
+		websocket.NewHub,
 	)
 	return nil
 

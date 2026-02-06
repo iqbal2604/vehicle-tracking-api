@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
 	"github.com/iqbal2604/vehicle-tracking-api/models"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
@@ -29,9 +30,11 @@ func (h *VehicleHandler) CreateVehicle(c *fiber.Ctx) error {
 		return helpers.Error(c, err.Error())
 	}
 
+	dto := dtos.ToVehicleResponse(v)
+
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Vehicle Created",
-		"data":    v,
+		"data":    dto,
 	})
 }
 
@@ -46,8 +49,8 @@ func (h *VehicleHandler) GetVehicle(c *fiber.Ctx) error {
 	if err != nil {
 		return helpers.ErrorResponse(c, 404, "Vehicle Not Found")
 	}
-
-	return helpers.SuccessResponse(c, v)
+	dto := dtos.ToVehicleResponse(*v)
+	return helpers.SuccessResponse(c, dto)
 }
 
 func (h *VehicleHandler) ListVehicle(c *fiber.Ctx) error {
@@ -57,8 +60,12 @@ func (h *VehicleHandler) ListVehicle(c *fiber.Ctx) error {
 	if err != nil {
 		return helpers.Error(c, err.Error())
 	}
+	var result []dtos.VehicleResponse
 
-	return helpers.SuccessResponse(c, vehicles)
+	for _, v := range vehicles {
+		result = append(result, dtos.ToVehicleResponse(v))
+	}
+	return helpers.SuccessResponse(c, result)
 }
 
 func (h *VehicleHandler) UpdateVehicle(c *fiber.Ctx) error {
@@ -82,7 +89,7 @@ func (h *VehicleHandler) UpdateVehicle(c *fiber.Ctx) error {
 
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Vehicle Updated",
-		"data":    v,
+		"data":    dtos.ToVehicleResponse(v),
 	})
 
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/routes"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
+	websocketpkg "github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
 
 func main() {
@@ -21,14 +22,20 @@ func main() {
 
 	db := config.NewDatabase()
 
+	hub := websocketpkg.NewHub()
+	go hub.Run()
+
 	//Repository
+
 	userRepo := repositories.NewUserRepository(db)
 	vehicleRepo := repositories.NewVehicleRepository(db)
 	gpsRepo := repositories.NewGPSRepository(db)
 	//Services
+
 	userService := services.NewUserService(userRepo)
 	vehicleService := services.NewVehicleService(vehicleRepo)
-	gpsService := services.NewGPSService(gpsRepo, vehicleRepo)
+	gpsService := services.NewGPSService(gpsRepo, vehicleRepo, hub)
+
 	//Handlers
 	authHandler := handlers.NewAuthHandler(userService)
 	userHandler := handlers.NewUserHandler(userService)
@@ -43,6 +50,7 @@ func main() {
 	routes.AuthRoutes(api, authHandler)
 	routes.UserRoutes(api, userHandler)
 	routes.GPSRoute(api, gpsHandler)
+	routes.WebsocketRoutes(app, hub)
 
 	app.Listen("localhost:3000")
 }

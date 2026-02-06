@@ -11,6 +11,7 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/handlers"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
+	"github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
 
 // Injectors from injector.go:
@@ -35,7 +36,8 @@ func InitializedGPSHandler() *handlers.GPSHandler {
 	db := config.NewDatabase()
 	gpsRepository := repositories.NewGPSRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
-	gpsService := services.NewGPSService(gpsRepository, vehicleRepository)
+	hub := websocket.NewHub()
+	gpsService := services.NewGPSService(gpsRepository, vehicleRepository, hub)
 	gpsHandler := handlers.NewGPSHandler(gpsService)
 	return gpsHandler
 }

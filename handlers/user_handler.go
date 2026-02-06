@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
@@ -33,8 +34,9 @@ func (h *UserHandler) GetProfile(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "User not found")
 	}
 
+	dto := dtos.ToUserResponse(*user)
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Profile retrieved",
-		"data":    user,
+		"data":    dto,
 	})
 }

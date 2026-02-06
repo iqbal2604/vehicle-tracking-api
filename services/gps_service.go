@@ -1,21 +1,26 @@
 package services
 
 import (
+	"encoding/json"
 	"errors"
 
+	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/models"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
+	websocketpkg "github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
 
 type GPSService struct {
 	gpsRepo     *repositories.GPSRepository
 	vehicleRepo *repositories.VehicleRepository
+	hub         *websocketpkg.Hub
 }
 
-func NewGPSService(gpsRepo *repositories.GPSRepository, vehicleRepo *repositories.VehicleRepository) *GPSService {
+func NewGPSService(gpsRepo *repositories.GPSRepository, vehicleRepo *repositories.VehicleRepository, hub *websocketpkg.Hub) *GPSService {
 	return &GPSService{
 		gpsRepo:     gpsRepo,
 		vehicleRepo: vehicleRepo,
+		hub:         hub,
 	}
 }
 
@@ -25,7 +30,15 @@ func (s *GPSService) CreateLocation(userID uint, loc *models.GPSLocation) error 
 	if err != nil {
 		return errors.New("Vehicle Not Found")
 	}
-	return s.gpsRepo.Create(loc)
+	if err := s.gpsRepo.Create(loc); err != nil {
+		return err
+	}
+
+	data, _ := json.Marshal(dtos.ToGPSResponse(*loc))
+	s.hub.Broadcast <- data
+
+	return nil
+
 }
 
 func (s *GPSService) GetLastLocation(userID uint, vehicleID uint) (*models.GPSLocation, error) {
