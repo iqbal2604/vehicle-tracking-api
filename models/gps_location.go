@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type GPSLocation struct {
 	ID        uint    `gorm:"primaryKey;autoIncrement"`
 	Latitude  float64 `json:"latitude"`
@@ -9,5 +11,5 @@ type GPSLocation struct {
 	VehicleID uint `json:"vehicle_id"`
 	Vehicle   Vehicle
 
-	CreatedAt int64 `gorm:"autoCreateTime"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
 }

@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/iqbal2604/vehicle-tracking-api/config"
 	"github.com/iqbal2604/vehicle-tracking-api/handlers"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
@@ -19,6 +20,12 @@ func main() {
 	}
 
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*", // Atau sesuaikan dengan domain frontend Anda
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
+	}))
 
 	db := config.NewDatabase()
 

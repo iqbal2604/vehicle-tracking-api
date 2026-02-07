@@ -3,6 +3,7 @@ package services
 import (
 	"encoding/json"
 	"errors"
+	"time"
 
 	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/models"
@@ -62,4 +63,15 @@ func (s *GPSService) GetHistory(userID uint, vehicleID uint) ([]models.GPSLocati
 	}
 
 	return s.gpsRepo.GetHistory(vehicleID)
+}
+
+func (s *GPSService) GetVehicleStatus(userID, vehicleID uint) (string, error) {
+	loc, err := s.gpsRepo.GetLastByVehicleID(vehicleID)
+	if err != nil {
+		return "offline", nil
+	}
+	if time.Since(loc.CreatedAt) <= 30*time.Second {
+		return "online", nil
+	}
+	return "offline", nil
 }

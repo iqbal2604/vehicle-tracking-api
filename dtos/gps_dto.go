@@ -1,14 +1,18 @@
 package dtos
 
-import "github.com/iqbal2604/vehicle-tracking-api/models"
+import (
+	"time"
+
+	"github.com/iqbal2604/vehicle-tracking-api/models"
+)
 
 type GPSResponse struct {
-	ID        uint    `json:"id"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-	Speed     float64 `json:"speed"`
-	CreatedAt int64   `json:"created_at"`
-	VehicleID uint    `json:"vehicle_id"`
+	ID        uint      `json:"id"`
+	Latitude  float64   `json:"latitude"`
+	Longitude float64   `json:"longitude"`
+	Speed     float64   `json:"speed"`
+	CreatedAt time.Time `json:"created_at"`
+	VehicleID uint      `json:"vehicle_id"`
 }
 
 type GPSHistoryResponse struct {

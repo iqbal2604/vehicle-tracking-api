@@ -11,9 +11,11 @@
 
 
 # LOGIN USER
+
 # POST http://localhost:3000/api/login
 # Accept: application/json
 # Content-Type: application/json
+
 
 # {
 #     "email":"mmuhammadiqbal963@gmail.com",
@@ -36,11 +38,11 @@
 # Content-Type: application/json
 
 # {
-#     "name": "Ferrari F1",
-#     "plate": "FR0001",
-#     "type":"Super CAR",
-#     "model":"Ferrari",
-#     "color":"RED"
+#     "name": "Vario 150",
+#     "plate": "BK00VR",
+#     "type":"Sepeda Motor",
+#     "model":"Honda",
+#     "color":"Black"
 # }
 
 
@@ -54,23 +56,34 @@
 
 #POST GPS VEHICLES
 
+# POST http://localhost:3000/api/gps
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA1NDIyNzMsInVzZXJfaWQiOjl9.20OJ9wsfHnGdekOJXlwf_4mszdjBlJOmvYOqtNJhS1s
+# Content-Type: application/json
+
+# {
+#     "vehicle_id": 10,
+#     "latitude": 2.800,
+#     "longitude": 120.4172,
+#     "speed": 200.3
+# }
+
 POST http://localhost:3000/api/gps
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA1NDIyNzMsInVzZXJfaWQiOjl9.20OJ9wsfHnGdekOJXlwf_4mszdjBlJOmvYOqtNJhS1s
 Content-Type: application/json
 
 {
-    "vehicle_id": 10,
-    "latitude": -400.3,
-    "longitude": 400.8,
-    "speed": 300.3
+    "vehicle_id": 11,
+    "latitude": 8.1705,
+    "longitude": 105.2126,
+    "speed": 200.3
 }
 
 
 
 #GET HISTORY GPS
 
-# GET http://localhost:3000/api/gps/history/10
-# # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
+# GET http://localhost:3000/api/gps/history/11
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA0NTQ1NTYsInVzZXJfaWQiOjl9.ngGaLQZyv60XM920OwdbCzvtIPS1BKqWvxPK6O4zwOg
 
 # GET LAST GPS
 
