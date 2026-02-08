@@ -28,7 +28,10 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
 
-	return helpers.SuccessResponse(c, "Register Success")
+	return helpers.SuccessResponse(c, fiber.Map{
+		"status":  201,
+		"message": "Register Succses",
+	})
 }
 
 func (h *AuthHandler) Login(c *fiber.Ctx) error {

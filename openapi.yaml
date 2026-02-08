@@ -1,0 +1,506 @@
+openapi: 3.0.3
+info:
+  title: Vehicle Tracking API
+  description: API for vehicle tracking system with authentication, vehicle management, and GPS tracking.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid Request"
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+          example: "Muhammad Iqbal"
+        email:
+          type: string
+          format: email
+          example: "mmuhammadiqbal963@gmail.com"
+        password:
+          type: string
+          example: "duaenam042000"
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "mmuhammadiqbal963@gmail.com"
+        password:
+          type: string
+          example: "duaenam042000"
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Login Success"
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    RegisterResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string
+          example: "Register Success"
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        Name:
+          type: string
+          example: "Muhammad Iqbal"
+        email:
+          type: string
+          example: "mmuhammadiqbal963@gmail.com"
+    ProfileResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Profile retrieved"
+        data:
+          $ref: '#/components/schemas/UserResponse'
+    VehicleRequest:
+      type: object
+      required:
+        - name
+        - plate
+        - type
+        - model
+        - color
+      properties:
+        name:
+          type: string
+          example: "Vario 150"
+        plate:
+          type: string
+          example: "BK00VR"
+        type:
+          type: string
+          example: "Sepeda Motor"
+        model:
+          type: string
+          example: "Honda"
+        color:
+          type: string
+          example: "Black"
+    VehicleResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Vario 150"
+        plate:
+          type: string
+          example: "BK00VR"
+        type:
+          type: string
+          example: "Sepeda Motor"
+        model:
+          type: string
+          example: "Honda"
+        color:
+          type: string
+          example: "Black"
+    VehicleCreateResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Vehicle Created"
+        data:
+          $ref: '#/components/schemas/VehicleResponse'
+    VehicleUpdateResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Vehicle Updated"
+        data:
+          $ref: '#/components/schemas/VehicleResponse'
+    VehicleDeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Vehicle Deleted"
+    GPSRequest:
+      type: object
+      required:
+        - vehicle_id
+        - latitude
+        - longitude
+        - speed
+      properties:
+        vehicle_id:
+          type: integer
+          example: 10
+        latitude:
+          type: number
+          format: float
+          example: 2.800
+        longitude:
+          type: number
+          format: float
+          example: 120.4172
+        speed:
+          type: number
+          format: float
+          example: 200.3
+    GPSResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        latitude:
+          type: number
+          format: float
+          example: 2.800
+        longitude:
+          type: number
+          format: float
+          example: 120.4172
+        speed:
+          type: number
+          format: float
+          example: 200.3
+        created_at:
+          type: string
+          format: date-time
+          example: "2023-10-01T12:00:00Z"
+        vehicle_id:
+          type: integer
+          example: 10
+    GPSHistoryResponse:
+      type: object
+      properties:
+        vehicle_id:
+          type: integer
+          example: 11
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/GPSResponse'
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /login:
+    post:
+      summary: Login user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /profile:
+    get:
+      summary: Get user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '400':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /vehicles:
+    post:
+      summary: Create a new vehicle
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleRequest'
+      responses:
+        '200':
+          description: Vehicle created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleCreateResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      summary: List vehicles for user
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of vehicles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VehicleResponse'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /vehicles/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Vehicle ID
+    get:
+      summary: Get vehicle by ID
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Vehicle details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleResponse'
+        '400':
+          description: Invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Vehicle not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update vehicle
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleRequest'
+      responses:
+        '200':
+          description: Vehicle updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleUpdateResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete vehicle
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Vehicle deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VehicleDeleteResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /gps:
+    post:
+      summary: Create GPS location
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GPSRequest'
+      responses:
+        '200':
+          description: GPS location created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GPSResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /gps/history/{vehicle_id}:
+    parameters:
+      - name: vehicle_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Vehicle ID
+    get:
+      summary: Get GPS history for vehicle
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: GPS history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GPSHistoryResponse'
+        '400':
+          description: Invalid Vehicle ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /gps/last/{vehicle_id}:
+    parameters:
+      - name: vehicle_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Vehicle ID
+    get:
+      summary: Get last GPS location for vehicle
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Last GPS location
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GPSResponse'
+        '400':
+          description: Invalid Vehicle ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /gps/stream/{vehicle_id}:
+    parameters:
+      - name: vehicle_id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Vehicle ID
+    get:
+      summary: Stream GPS locations for vehicle
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Server-sent events stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '400':
+          description: Invalid Vehicle ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /ws:
+    get:
+      summary: WebSocket connection
+      description: Establish a WebSocket connection for real-time communication.
+      responses:
+        '101':
+          description: Switching protocols to WebSocket
