@@ -6,11 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/iqbal2604/vehicle-tracking-api/config"
-	"github.com/iqbal2604/vehicle-tracking-api/handlers"
-	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/routes"
-	"github.com/iqbal2604/vehicle-tracking-api/services"
-	websocketpkg "github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
 
 func main() {
@@ -22,32 +18,18 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*", // Atau sesuaikan dengan domain frontend Anda
+		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
 	}))
 
-	db := config.NewDatabase()
+	// Initialize handlers using Wire
+	authHandler := InitializeAuthHandler()
+	userHandler := InitializeUserHandler()
+	vehicleHandler := InitializeVehicleHandler()
+	gpsHandler, hub := InitializedGPSHandler()
 
-	hub := websocketpkg.NewHub()
 	go hub.Run()
-
-	//Repository
-
-	userRepo := repositories.NewUserRepository(db)
-	vehicleRepo := repositories.NewVehicleRepository(db)
-	gpsRepo := repositories.NewGPSRepository(db)
-	//Services
-
-	userService := services.NewUserService(userRepo)
-	vehicleService := services.NewVehicleService(vehicleRepo)
-	gpsService := services.NewGPSService(gpsRepo, vehicleRepo, hub)
-
-	//Handlers
-	authHandler := handlers.NewAuthHandler(userService)
-	userHandler := handlers.NewUserHandler(userService)
-	vehicleHandler := handlers.NewVehicleHandler(vehicleService, userRepo)
-	gpsHandler := handlers.NewGPSHandler(gpsService)
 
 	//Group
 	api := app.Group("/api")

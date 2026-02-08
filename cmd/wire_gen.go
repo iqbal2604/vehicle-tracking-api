@@ -24,6 +24,14 @@ func InitializeUserHandler() *handlers.UserHandler {
 	return userHandler
 }
 
+func InitializeAuthHandler() *handlers.AuthHandler {
+	db := config.NewDatabase()
+	userRepository := repositories.NewUserRepository(db)
+	userService := services.NewUserService(userRepository)
+	authHandler := handlers.NewAuthHandler(userService)
+	return authHandler
+}
+
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	db := config.NewDatabase()
 	vehicleRepository := repositories.NewVehicleRepository(db)
@@ -33,12 +41,12 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 	return vehicleHandler
 }
 
-func InitializedGPSHandler() *handlers.GPSHandler {
+func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
 	db := config.NewDatabase()
 	gpsRepository := repositories.NewGPSRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	hub := websocket.NewHub()
 	gpsService := services.NewGPSService(gpsRepository, vehicleRepository, hub)
 	gpsHandler := handlers.NewGPSHandler(gpsService)
-	return gpsHandler
+	return gpsHandler, hub
 }

@@ -68,6 +68,87 @@ const vehicleLastSeen = {};
 let followVehicleId = null;
 let historyLine = null;
 
+const vehiclePaths = {
+  1: { start: [3.5952, 98.6722], end: [-6.2088, 106.8456], steps: 20, currentStep: 0 },
+  2: { start: [-6.2088, 106.8456], end: [-2.5337, 140.7181], steps: 20, currentStep: 0 }
+};
+
+
+/* ===================== */
+/* GPS SIMULATION */
+/* ===================== */
+
+function simulateGPS() {
+  Object.keys(vehiclePaths).forEach(vid => {
+    const path = vehiclePaths[vid];
+    if (path.currentStep < path.steps) {
+      const progress = path.currentStep / path.steps;
+      const lat = path.start[0] + (path.end[0] - path.start[0]) * progress;
+      const lng = path.start[1] + (path.end[1] - path.start[1]) * progress;
+
+      // Send data to backend
+      fetch('http://localhost:3000/api/gps', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${TOKEN}`
+        },
+        body: JSON.stringify({
+          vehicle_id: parseInt(vid),
+          latitude: lat,
+          longitude: lng
+        })
+      }).then(response => {
+        if (response.ok) {
+          console.log(`GPS data sent for vehicle ${vid}`);
+        } else {
+          console.error(`Failed to send GPS data for vehicle ${vid}`);
+        }
+      }).catch(error => {
+        console.error(`Error sending GPS data for vehicle ${vid}:`, error);
+      });
+
+      path.currentStep++;
+    }
+  });
+}
+
+function handleVehicleUpdate(data) {
+  const vid = data.vehicle_id;
+  const latlng = L.latLng(data.latitude, data.longitude);
+
+  /* update last seen */
+  vehicleLastSeen[vid] = Date.now();
+
+  /* CREATE MARKER */
+  if (!markers[vid]) {
+    markers[vid] = L.marker(latlng).addTo(map);
+    markers[vid]._lastLatLng = latlng;
+
+    markers[vid].on("click", () => {
+      followVehicleId = vid;
+      loadHistory(vid);
+    });
+  }
+  /* UPDATE MARKER */
+  else {
+    animateMarker(
+      markers[vid],
+      markers[vid]._lastLatLng,
+      latlng
+    );
+
+    markers[vid]._lastLatLng = latlng;
+  }
+
+  /* UPDATE POPUP */
+  updatePopup(vid);
+
+  /* AUTO FOLLOW */
+  if (followVehicleId === vid) {
+    map.panTo(latlng, { animate: true });
+  }
+}
 
 /* ===================== */
 /* WEBSOCKET */
@@ -81,52 +162,9 @@ const ws = new WebSocket(
 
 ws.onopen = () => console.log("WS Connected");
 
-
 ws.onmessage = (event) => {
-
- const data = JSON.parse(event.data);
-
- const vid = data.vehicle_id;
- const latlng = L.latLng(data.latitude,data.longitude);
-
- /* update last seen */
- vehicleLastSeen[vid] = Date.now();
-
-
- /* CREATE MARKER */
- if(!markers[vid]){
-
-  markers[vid] = L.marker(latlng).addTo(map);
-  markers[vid]._lastLatLng = latlng;
-
-  markers[vid].on("click",()=>{
-   followVehicleId = vid;
-   loadHistory(vid);
-  });
-
- } 
- /* UPDATE MARKER */
- else{
-
-  animateMarker(
-   markers[vid],
-   markers[vid]._lastLatLng,
-   latlng
-  );
-
-  markers[vid]._lastLatLng = latlng;
- }
-
-
- /* UPDATE POPUP */
- updatePopup(vid);
-
-
- /* AUTO FOLLOW */
- if(followVehicleId === vid){
-  map.panTo(latlng,{animate:true});
- }
-
+  const data = JSON.parse(event.data);
+  handleVehicleUpdate(data);
 };
 
 
@@ -184,6 +222,12 @@ async function loadHistory(vehicleId){
  map.fitBounds(historyLine.getBounds());
 }
 
+
+/* ===================== */
+/* GPS SIMULATION INTERVAL */
+/* ===================== */
+
+setInterval(simulateGPS, 5000);
 
 /* ===================== */
 /* ONLINE / OFFLINE CHECK */

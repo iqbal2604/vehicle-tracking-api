@@ -20,7 +20,7 @@
 
 
 # {
-#     "email":"admin@gmail.com",
+#     "email":"admin@admin.com",
 #     "password":"secret"
 # }
 
@@ -50,9 +50,9 @@
 
 #GET VEHICLES
 
-# GET http://localhost:3000/api/vehicles/
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2MjEyMzEsInVzZXJfaWQiOjF9.0GeMAl0aC1cvnW1Lf62ML53l3VGVRXdHVyyDuq-3xOk
-# Content-Type: application/json
+GET http://localhost:3000/api/vehicles/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2Mjc0ODMsInVzZXJfaWQiOjN9.mSNvcyQDi0vGVDAQTGBY4VRVFTw8qNMBlpO_WH-KdR0
+Content-Type: application/json
 
 
 

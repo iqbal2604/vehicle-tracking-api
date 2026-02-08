@@ -24,6 +24,16 @@ func InitializeUserHandler() *handlers.UserHandler {
 	return nil
 }
 
+func InitializeAuthHandler() *handlers.AuthHandler {
+	wire.Build(
+		config.NewDatabase,
+		repositories.NewUserRepository,
+		services.NewUserService,
+		handlers.NewAuthHandler,
+	)
+	return nil
+}
+
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	wire.Build(
 		config.NewDatabase,
@@ -35,7 +45,7 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 	return nil
 }
 
-func InitializedGPSHandler() *handlers.GPSHandler {
+func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
 	wire.Build(
 
 		config.NewDatabase,
@@ -45,6 +55,6 @@ func InitializedGPSHandler() *handlers.GPSHandler {
 		handlers.NewGPSHandler,
 		websocket.NewHub,
 	)
-	return nil
+	return nil, nil
 
 }
