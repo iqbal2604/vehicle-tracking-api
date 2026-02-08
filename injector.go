@@ -27,6 +27,7 @@ func InitializeUserHandler() *handlers.UserHandler {
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	wire.Build(
 		config.NewDatabase,
+		repositories.NewUserRepository,
 		repositories.NewVehicleRepository,
 		services.NewVehicleService,
 		handlers.NewVehicleHandler,

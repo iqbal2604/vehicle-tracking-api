@@ -17,7 +17,10 @@ func NewUserService(repo *repositories.UserRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
-func (s *UserService) Register(name, email, password string) error {
+func (s *UserService) Register(name, email, password, role string) error {
+	if role == "" {
+		role = "driver"
+	}
 
 	existingUser, _ := s.repo.FindByEmail(email)
 	if existingUser != nil {
@@ -33,6 +36,7 @@ func (s *UserService) Register(name, email, password string) error {
 		Name:     name,
 		Email:    email,
 		Password: string(hashedPassword),
+		Role:     role,
 	}
 
 	return s.repo.Create(&user)

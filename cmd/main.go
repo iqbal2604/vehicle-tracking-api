@@ -46,7 +46,7 @@ func main() {
 	//Handlers
 	authHandler := handlers.NewAuthHandler(userService)
 	userHandler := handlers.NewUserHandler(userService)
-	vehicleHandler := handlers.NewVehicleHandler(vehicleService)
+	vehicleHandler := handlers.NewVehicleHandler(vehicleService, userRepo)
 	gpsHandler := handlers.NewGPSHandler(gpsService)
 
 	//Group

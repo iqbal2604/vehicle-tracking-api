@@ -9,7 +9,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() error {
-	dsn := "root@tcp(localhost:3306)/vehicle_tracking?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root@tcp(localhost:3306)/vehicle_tracking?charset=utf8mb4&parseTime=True&loc=UTC"
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 

@@ -23,7 +23,7 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Request")
 	}
 
-	err := h.service.Register(req.Name, req.Email, req.Password)
+	err := h.service.Register(req.Name, req.Email, req.Password, req.Role)
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}

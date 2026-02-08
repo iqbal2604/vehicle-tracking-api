@@ -53,3 +53,11 @@ func (s *VehicleService) DeleteVehicle(userID, id uint) error {
 
 	return s.repo.Delete(userID, id)
 }
+
+func (s *VehicleService) ListAllVehicles() ([]models.Vehicle, error) {
+	var vehicles []models.Vehicle
+	if err := s.repo.DB.Find(&vehicles).Error; err != nil {
+		return nil, err
+	}
+	return vehicles, nil
+}

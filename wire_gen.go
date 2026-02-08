@@ -28,7 +28,8 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 	db := config.NewDatabase()
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	vehicleService := services.NewVehicleService(vehicleRepository)
-	vehicleHandler := handlers.NewVehicleHandler(vehicleService)
+	userRepository := repositories.NewUserRepository(db)
+	vehicleHandler := handlers.NewVehicleHandler(vehicleService, userRepository)
 	return vehicleHandler
 }
 

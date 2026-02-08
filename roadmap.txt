@@ -22,3 +22,16 @@ format
 11. Testing - Unit test service & repository
 12. Deployment - Environment config - Build binary - VPS / Docker
 / Cloud
+
+
+2.0
+Update User Model: Add a Role field to the User struct (e.g., string with values "admin" or "driver").
+Update Registration: Modify registration to accept and set a role (default to "driver", allow "admin" only if specified or via admin action).
+Update DTOs: Ensure user DTOs include the role for responses.
+Update Services: Modify UserService to handle role in registration and profile retrieval.
+Update Handlers:
+AuthHandler: Update register to accept role.
+VehicleHandler: Add role-based access (admins can manage all vehicles, drivers only their own).
+Update Requests: Add role to register request struct.
+Database Migration: Run a migration to add the role column to the users table.
+Testing: Test role-based access and registration.
