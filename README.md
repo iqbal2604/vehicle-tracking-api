@@ -42,7 +42,7 @@ A robust backend REST API for a vehicle tracking system built with Golang and th
 
 4. Run the application:
    ```bash
-   go run cmd/main.go
+   go run ./cmd
    ```
 
    The server will start on `http://localhost:3000`.

@@ -29,7 +29,7 @@
 #GET PROFILE USER
 
 # GET http://localhost:3000/api/profile
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2Mjc0ODMsInVzZXJfaWQiOjN9.mSNvcyQDi0vGVDAQTGBY4VRVFTw8qNMBlpO_WH-KdR0
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA3MjIwMjUsInVzZXJfaWQiOjN9.ytCGpyfYlJQMoP9AIfs9yziJGRysggZEU-TGaL1Xnxc
 # Content-Type: application/json
 
 
@@ -50,9 +50,9 @@
 
 #GET VEHICLES
 
-# GET http://localhost:3000/api/vehicles/
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2Mjc0ODMsInVzZXJfaWQiOjN9.mSNvcyQDi0vGVDAQTGBY4VRVFTw8qNMBlpO_WH-KdR0
-# Content-Type: application/json
+GET http://localhost:3000/api/vehicles/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA3MjIwMjUsInVzZXJfaWQiOjN9.ytCGpyfYlJQMoP9AIfs9yziJGRysggZEU-TGaL1Xnxc
+Content-Type: application/json
 
 
 
