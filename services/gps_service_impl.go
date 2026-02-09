@@ -11,21 +11,21 @@ import (
 	websocketpkg "github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
 
-type GPSService struct {
+type GPSServiceImpl struct {
 	gpsRepo     *repositories.GPSRepository
 	vehicleRepo *repositories.VehicleRepository
 	hub         *websocketpkg.Hub
 }
 
-func NewGPSService(gpsRepo *repositories.GPSRepository, vehicleRepo *repositories.VehicleRepository, hub *websocketpkg.Hub) *GPSService {
-	return &GPSService{
+func NewGPSService(gpsRepo *repositories.GPSRepository, vehicleRepo *repositories.VehicleRepository, hub *websocketpkg.Hub) GPSService {
+	return &GPSServiceImpl{
 		gpsRepo:     gpsRepo,
 		vehicleRepo: vehicleRepo,
 		hub:         hub,
 	}
 }
 
-func (s *GPSService) CreateLocation(userID uint, loc *models.GPSLocation) error {
+func (s *GPSServiceImpl) CreateLocation(userID uint, loc *models.GPSLocation) error {
 
 	_, err := s.vehicleRepo.FindByID(userID, loc.VehicleID)
 	if err != nil {
@@ -46,7 +46,7 @@ func (s *GPSService) CreateLocation(userID uint, loc *models.GPSLocation) error 
 
 }
 
-func (s *GPSService) GetLastLocation(userID uint, vehicleID uint) (*models.GPSLocation, error) {
+func (s *GPSServiceImpl) GetLastLocation(userID uint, vehicleID uint) (*models.GPSLocation, error) {
 	_, err := s.vehicleRepo.FindByID(userID, vehicleID)
 
 	if err != nil {
@@ -56,7 +56,7 @@ func (s *GPSService) GetLastLocation(userID uint, vehicleID uint) (*models.GPSLo
 	return s.gpsRepo.GetLastByVehicleID(vehicleID)
 }
 
-func (s *GPSService) GetHistory(userID uint, vehicleID uint) ([]models.GPSLocation, error) {
+func (s *GPSServiceImpl) GetHistory(userID uint, vehicleID uint) ([]models.GPSLocation, error) {
 	_, err := s.vehicleRepo.FindByID(userID, vehicleID)
 	if err != nil {
 		return nil, errors.New("Vehicle Not Found")
@@ -65,7 +65,7 @@ func (s *GPSService) GetHistory(userID uint, vehicleID uint) ([]models.GPSLocati
 	return s.gpsRepo.GetHistory(vehicleID)
 }
 
-func (s *GPSService) GetVehicleStatus(userID, vehicleID uint) (string, error) {
+func (s *GPSServiceImpl) GetVehicleStatus(userID, vehicleID uint) (string, error) {
 	loc, err := s.gpsRepo.GetLastByVehicleID(vehicleID)
 	if err != nil {
 		return "offline", nil

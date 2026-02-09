@@ -9,15 +9,15 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserService struct {
+type UserServiceImpl struct {
 	repo *repositories.UserRepository
 }
 
-func NewUserService(repo *repositories.UserRepository) *UserService {
-	return &UserService{repo: repo}
+func NewUserService(repo *repositories.UserRepository) UserService {
+	return &UserServiceImpl{repo: repo}
 }
 
-func (s *UserService) Register(name, email, password, role string) error {
+func (s *UserServiceImpl) Register(name, email, password, role string) error {
 	if role == "" {
 		role = "driver"
 	}
@@ -42,7 +42,7 @@ func (s *UserService) Register(name, email, password, role string) error {
 	return s.repo.Create(&user)
 }
 
-func (s *UserService) Login(email, password string) (string, error) {
+func (s *UserServiceImpl) Login(email, password string) (string, error) {
 
 	user, err := s.repo.FindByEmail(email)
 	if err != nil {
@@ -65,7 +65,7 @@ func (s *UserService) Login(email, password string) (string, error) {
 	return token, nil
 }
 
-func (s *UserService) GetProfile(userID uint) (*models.User, error) {
+func (s *UserServiceImpl) GetProfile(userID uint) (*models.User, error) {
 	user, err := s.repo.FindByID(userID)
 	if err != nil {
 		return nil, err

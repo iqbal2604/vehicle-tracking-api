@@ -12,11 +12,11 @@ import (
 )
 
 type VehicleHandler struct {
-	service *services.VehicleService
+	service services.VehicleService
 	repo    *repositories.UserRepository
 }
 
-func NewVehicleHandler(service *services.VehicleService, repo *repositories.UserRepository) *VehicleHandler {
+func NewVehicleHandler(service services.VehicleService, repo *repositories.UserRepository) *VehicleHandler {
 	return &VehicleHandler{service: service, repo: repo}
 }
 
