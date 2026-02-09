@@ -3,7 +3,7 @@ package dtos
 import (
 	"time"
 
-	"github.com/iqbal2604/vehicle-tracking-api/models"
+	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 )
 
 type GPSResponse struct {

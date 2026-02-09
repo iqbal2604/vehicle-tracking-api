@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
-	"github.com/iqbal2604/vehicle-tracking-api/models"
+	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"golang.org/x/crypto/bcrypt"
 )

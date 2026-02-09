@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/iqbal2604/vehicle-tracking-api/dtos"
-	"github.com/iqbal2604/vehicle-tracking-api/models"
+	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	websocketpkg "github.com/iqbal2604/vehicle-tracking-api/websocket"
 )

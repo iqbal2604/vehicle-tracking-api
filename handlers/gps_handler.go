@@ -8,7 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
-	"github.com/iqbal2604/vehicle-tracking-api/models"
+	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
 

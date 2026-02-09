@@ -2,15 +2,22 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/iqbal2604/vehicle-tracking-api/config"
 	"github.com/iqbal2604/vehicle-tracking-api/routes"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := config.ConnectDatabase()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	err = config.ConnectDatabase()
 	if err != nil {
 		log.Fatal("DB Connection Failed")
 	}
@@ -41,5 +48,9 @@ func main() {
 	routes.GPSRoute(api, gpsHandler)
 	routes.WebsocketRoutes(app, hub)
 
-	app.Listen("localhost:3000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	app.Listen("localhost:" + port)
 }

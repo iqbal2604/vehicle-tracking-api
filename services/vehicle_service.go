@@ -3,7 +3,7 @@ package services
 import (
 	"errors"
 
-	"github.com/iqbal2604/vehicle-tracking-api/models"
+	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 )
 
@@ -56,7 +56,7 @@ func (s *VehicleService) DeleteVehicle(userID, id uint) error {
 
 func (s *VehicleService) ListAllVehicles() ([]models.Vehicle, error) {
 	var vehicles []models.Vehicle
-	if err := s.repo.DB.Find(&vehicles).Error; err != nil {
+	if err := s.repo.DB.Preload("User").Find(&vehicles).Error; err != nil {
 		return nil, err
 	}
 	return vehicles, nil
