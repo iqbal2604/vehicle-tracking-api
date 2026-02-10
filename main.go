@@ -35,6 +35,7 @@ func main() {
 	userHandler := InitializeUserHandler()
 	vehicleHandler := InitializeVehicleHandler()
 	gpsHandler, hub := InitializedGPSHandler()
+	logHandler := InitializeLogHandler()
 
 	go hub.Run()
 
@@ -46,6 +47,7 @@ func main() {
 	routes.AuthRoutes(api, authHandler)
 	routes.UserRoutes(api, userHandler)
 	routes.GPSRoute(api, gpsHandler)
+	routes.LogRoute(api, logHandler)
 	routes.WebsocketRoutes(app, hub)
 
 	port := os.Getenv("PORT")

@@ -9,6 +9,7 @@ package main
 import (
 	"github.com/iqbal2604/vehicle-tracking-api/config"
 	"github.com/iqbal2604/vehicle-tracking-api/handlers"
+	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 	"github.com/iqbal2604/vehicle-tracking-api/websocket"
@@ -26,27 +27,41 @@ func InitializeUserHandler() *handlers.UserHandler {
 
 func InitializeAuthHandler() *handlers.AuthHandler {
 	db := config.NewDatabase()
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
 	userRepository := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepository)
-	authHandler := handlers.NewAuthHandler(userService)
+	authHandler := handlers.NewAuthHandler(userService, logService)
 	return authHandler
 }
 
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	db := config.NewDatabase()
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
+	userRepository := repositories.NewUserRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	vehicleService := services.NewVehicleService(vehicleRepository)
-	userRepository := repositories.NewUserRepository(db)
-	vehicleHandler := handlers.NewVehicleHandler(vehicleService, userRepository)
+	vehicleHandler := handlers.NewVehicleHandler(vehicleService, userRepository, logService)
 	return vehicleHandler
 }
 
 func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
 	db := config.NewDatabase()
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
 	gpsRepository := repositories.NewGPSRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	hub := websocket.NewHub()
 	gpsService := services.NewGPSService(gpsRepository, vehicleRepository, hub)
-	gpsHandler := handlers.NewGPSHandler(gpsService)
+	gpsHandler := handlers.NewGPSHandler(gpsService, logService)
 	return gpsHandler, hub
+}
+
+func InitializeLogHandler() *logs.LogHandler {
+	db := config.NewDatabase()
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
+	logHandler := logs.NewLogHandler(logService)
+	return logHandler
 }

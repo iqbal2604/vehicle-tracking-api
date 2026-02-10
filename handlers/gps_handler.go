@@ -8,16 +8,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
+	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
 
 type GPSHandler struct {
-	service services.GPSService
+	service    services.GPSService
+	logService logs.LogService
 }
 
-func NewGPSHandler(service services.GPSService) *GPSHandler {
-	return &GPSHandler{service: service}
+func NewGPSHandler(service services.GPSService, logService logs.LogService) *GPSHandler {
+	return &GPSHandler{service: service, logService: logService}
 }
 
 func (h *GPSHandler) CreateLocation(c *fiber.Ctx) error {
@@ -31,6 +33,10 @@ func (h *GPSHandler) CreateLocation(c *fiber.Ctx) error {
 	if err := h.service.CreateLocation(userID, &loc); err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
+
+	ip := c.IP()
+	h.logService.LogAuth("create_location", &userID, "GPS location created for vehicle", ip)
+
 	dto := dtos.ToGPSResponse(loc)
 	return helpers.SuccessResponse(c, dto)
 }
@@ -63,6 +69,9 @@ func (h *GPSHandler) GetHistory(c *fiber.Ctx) error {
 	if err != nil {
 		return helpers.ErrorResponse(c, 404, err.Error())
 	}
+
+	ip := c.IP()
+	h.logService.LogAuth("get_history_location", &userID, "Get location history for vehicle", ip)
 
 	var result []dtos.GPSResponse
 	for _, g := range locations {

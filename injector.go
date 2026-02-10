@@ -9,6 +9,7 @@ import (
 	"github.com/google/wire"
 	"github.com/iqbal2604/vehicle-tracking-api/config"
 	"github.com/iqbal2604/vehicle-tracking-api/handlers"
+	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 	"github.com/iqbal2604/vehicle-tracking-api/websocket"
@@ -27,6 +28,8 @@ func InitializeUserHandler() *handlers.UserHandler {
 func InitializeAuthHandler() *handlers.AuthHandler {
 	wire.Build(
 		config.NewDatabase,
+		logs.NewLogRepository,
+		logs.NewLogServiceImpl,
 		repositories.NewUserRepository,
 		services.NewUserService,
 		handlers.NewAuthHandler,
@@ -37,6 +40,8 @@ func InitializeAuthHandler() *handlers.AuthHandler {
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	wire.Build(
 		config.NewDatabase,
+		logs.NewLogRepository,
+		logs.NewLogServiceImpl,
 		repositories.NewUserRepository,
 		repositories.NewVehicleRepository,
 		services.NewVehicleService,
@@ -49,6 +54,8 @@ func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
 	wire.Build(
 
 		config.NewDatabase,
+		logs.NewLogRepository,
+		logs.NewLogServiceImpl,
 		repositories.NewGPSRepository,
 		repositories.NewVehicleRepository,
 		services.NewGPSService,
@@ -57,4 +64,13 @@ func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
 	)
 	return nil, nil
 
+}
+func InitializeLogHandler() *logs.LogHandler {
+	wire.Build(
+		config.NewDatabase,
+		logs.NewLogRepository,
+		logs.NewLogServiceImpl,
+		logs.NewLogHandler,
+	)
+	return nil
 }

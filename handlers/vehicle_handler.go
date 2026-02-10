@@ -6,18 +6,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
+	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
 
 type VehicleHandler struct {
-	service services.VehicleService
-	repo    *repositories.UserRepository
+	service    services.VehicleService
+	repo       *repositories.UserRepository
+	logService logs.LogService
 }
 
-func NewVehicleHandler(service services.VehicleService, repo *repositories.UserRepository) *VehicleHandler {
-	return &VehicleHandler{service: service, repo: repo}
+func NewVehicleHandler(service services.VehicleService, repo *repositories.UserRepository, logService logs.LogService) *VehicleHandler {
+	return &VehicleHandler{service: service, repo: repo, logService: logService}
 }
 
 func (h *VehicleHandler) getUserRole(userID uint) (string, error) {
@@ -48,6 +50,9 @@ func (h *VehicleHandler) CreateVehicle(c *fiber.Ctx) error {
 	if err := h.service.CreateVehicle(userID, &v); err != nil {
 		return helpers.Error(c, err.Error())
 	}
+
+	ip := c.IP()
+	h.logService.LogAuth("create_vehicle", &userID, "Vehicle Created:"+v.Name, ip)
 
 	dto := dtos.ToVehicleResponse(v)
 
@@ -140,6 +145,9 @@ func (h *VehicleHandler) UpdateVehicle(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
 
+	ip := c.IP()
+	h.logService.LogAuth("update_vehicle", &userID, "Vehicle Updated: ID"+strconv.Itoa(int(v.ID)), ip)
+
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Vehicle Updated",
 		"data":    dtos.ToVehicleResponse(v),
@@ -159,6 +167,9 @@ func (h *VehicleHandler) DeleteVehicle(c *fiber.Ctx) error {
 	if err := h.service.DeleteVehicle(userID, uint(id)); err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
+
+	ip := c.IP()
+	h.logService.LogAuth("delete_vehicle", &userID, "Vehicle Deleted: ID "+idParam, ip)
 
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Vehicle Deleted",

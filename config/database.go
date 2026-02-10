@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -23,7 +24,7 @@ func ConnectDatabase() error {
 
 	DB = db
 
-	DB.AutoMigrate(&models.User{}, &models.Vehicle{}, &models.GPSLocation{})
+	DB.AutoMigrate(&models.User{}, &models.Vehicle{}, &models.GPSLocation{}, &logs.Log{})
 	return nil
 
 }

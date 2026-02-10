@@ -3,16 +3,18 @@ package handlers
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
+	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	"github.com/iqbal2604/vehicle-tracking-api/requests"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
 
 type AuthHandler struct {
-	service services.UserService
+	service    services.UserService
+	logService logs.LogService
 }
 
-func NewAuthHandler(service services.UserService) *AuthHandler {
-	return &AuthHandler{service: service}
+func NewAuthHandler(service services.UserService, logService logs.LogService) *AuthHandler {
+	return &AuthHandler{service: service, logService: logService}
 }
 
 func (h *AuthHandler) Register(c *fiber.Ctx) error {
@@ -27,6 +29,9 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
+
+	ip := c.IP()
+	h.logService.LogAuth("register", nil, "User Registered:"+req.Email, ip)
 
 	return helpers.SuccessResponse(c, fiber.Map{
 		"status":  201,
@@ -45,6 +50,9 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
+
+	ip := c.IP()
+	h.logService.LogAuth("login", nil, "User Logged in: "+req.Email, ip)
 
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Login Success",
