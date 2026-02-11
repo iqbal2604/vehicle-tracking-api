@@ -27,35 +27,39 @@ func InitializeUserHandler() *handlers.UserHandler {
 
 func InitializeAuthHandler() *handlers.AuthHandler {
 	db := config.NewDatabase()
-	logRepository := logs.NewLogRepository(db)
-	logService := logs.NewLogServiceImpl(logRepository)
 	userRepository := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepository)
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
 	authHandler := handlers.NewAuthHandler(userService, logService)
 	return authHandler
 }
 
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	db := config.NewDatabase()
-	logRepository := logs.NewLogRepository(db)
-	logService := logs.NewLogServiceImpl(logRepository)
-	userRepository := repositories.NewUserRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	vehicleService := services.NewVehicleService(vehicleRepository)
+	userRepository := repositories.NewUserRepository(db)
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
 	vehicleHandler := handlers.NewVehicleHandler(vehicleService, userRepository, logService)
 	return vehicleHandler
 }
 
-func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
+func InitializedGPSHandler() *GPSComponents {
 	db := config.NewDatabase()
-	logRepository := logs.NewLogRepository(db)
-	logService := logs.NewLogServiceImpl(logRepository)
 	gpsRepository := repositories.NewGPSRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	hub := websocket.NewHub()
 	gpsService := services.NewGPSService(gpsRepository, vehicleRepository, hub)
+	logRepository := logs.NewLogRepository(db)
+	logService := logs.NewLogServiceImpl(logRepository)
 	gpsHandler := handlers.NewGPSHandler(gpsService, logService)
-	return gpsHandler, hub
+	gpsComponents := &GPSComponents{
+		Handler: gpsHandler,
+		Hub:     hub,
+	}
+	return gpsComponents
 }
 
 func InitializeLogHandler() *logs.LogHandler {
@@ -64,4 +68,11 @@ func InitializeLogHandler() *logs.LogHandler {
 	logService := logs.NewLogServiceImpl(logRepository)
 	logHandler := logs.NewLogHandler(logService)
 	return logHandler
+}
+
+// injector.go:
+
+type GPSComponents struct {
+	Handler *handlers.GPSHandler
+	Hub     *websocket.Hub
 }

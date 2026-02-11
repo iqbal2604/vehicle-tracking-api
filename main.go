@@ -34,10 +34,10 @@ func main() {
 	authHandler := InitializeAuthHandler()
 	userHandler := InitializeUserHandler()
 	vehicleHandler := InitializeVehicleHandler()
-	gpsHandler, hub := InitializedGPSHandler()
+	gpsApp := InitializedGPSHandler()
 	logHandler := InitializeLogHandler()
 
-	go hub.Run()
+	go gpsApp.Hub.Run()
 
 	//Group
 	api := app.Group("/api")
@@ -46,9 +46,9 @@ func main() {
 	routes.VehicleRoutes(api, vehicleHandler)
 	routes.AuthRoutes(api, authHandler)
 	routes.UserRoutes(api, userHandler)
-	routes.GPSRoute(api, gpsHandler)
+	routes.GPSRoute(api, gpsApp.Handler)
 	routes.LogRoute(api, logHandler)
-	routes.WebsocketRoutes(app, hub)
+	routes.WebsocketRoutes(app, gpsApp.Hub)
 
 	port := os.Getenv("PORT")
 	if port == "" {

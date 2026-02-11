@@ -2,7 +2,6 @@
 // +build wireinject
 
 // gobuild wireinject
-
 package main
 
 import (
@@ -14,6 +13,11 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 	"github.com/iqbal2604/vehicle-tracking-api/websocket"
 )
+
+type GPSComponents struct {
+	Handler *handlers.GPSHandler
+	Hub     *websocket.Hub
+}
 
 func InitializeUserHandler() *handlers.UserHandler {
 	wire.Build(
@@ -50,7 +54,7 @@ func InitializeVehicleHandler() *handlers.VehicleHandler {
 	return nil
 }
 
-func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
+func InitializedGPSHandler() *GPSComponents {
 	wire.Build(
 
 		config.NewDatabase,
@@ -61,8 +65,9 @@ func InitializedGPSHandler() (*handlers.GPSHandler, *websocket.Hub) {
 		services.NewGPSService,
 		handlers.NewGPSHandler,
 		websocket.NewHub,
+		wire.Struct(new(GPSComponents), "*"),
 	)
-	return nil, nil
+	return nil
 
 }
 func InitializeLogHandler() *logs.LogHandler {

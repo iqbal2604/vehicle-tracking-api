@@ -19,7 +19,7 @@
 
 
 # {
-#     "email":"admin@admin.com",
+#     "email":"columbina@gmail.com",
 #     "password":"secret"
 # }
 
@@ -35,15 +35,15 @@
 #POST VEHICLES
 
 # POST http://localhost:3000/api/vehicles
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2MjEyMzEsInVzZXJfaWQiOjF9.0GeMAl0aC1cvnW1Lf62ML53l3VGVRXdHVyyDuq-3xOk
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA4NzExNDgsInVzZXJfaWQiOjR9.bdGolbgKPBwMbb8cQ49HnPQIHsSPg1ywE4mPLFviAm8
 # Content-Type: application/json
 
 # {
-#     "name": "Scoopy 2020",
-#     "plate": "SC0020",
-#     "type":"Motorcycle",
+#     "name": "Galardo ",
+#     "plate": "GRD0001",
+#     "type":"SuperCar",
 #     "model":"Honda",
-#     "color":"White"
+#     "color":"RED"
 # }
 
 
@@ -58,11 +58,11 @@
 #POST GPS VEHICLES
 
 # POST http://localhost:3000/api/gps
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2MjEyMzEsInVzZXJfaWQiOjF9.0GeMAl0aC1cvnW1Lf62ML53l3VGVRXdHVyyDuq-3xOk
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA4NzExNDgsInVzZXJfaWQiOjR9.bdGolbgKPBwMbb8cQ49HnPQIHsSPg1ywE4mPLFviAm8
 # Content-Type: application/json
 
 # {
-#     "vehicle_id": 1,
+#     "vehicle_id": 4,
 #     "latitude": 4.800,
 #     "longitude": 120.4172,
 #     "speed": 200.3

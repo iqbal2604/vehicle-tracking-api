@@ -64,6 +64,7 @@ L.tileLayer(
 
 const markers = {};
 const vehicleLastSeen = {};
+const vehicleTrails = {};
 
 let followVehicleId = null;
 let historyLine = null;
@@ -85,6 +86,9 @@ function simulateGPS() {
       const progress = path.currentStep / path.steps;
       const lat = path.start[0] + (path.end[0] - path.start[0]) * progress;
       const lng = path.start[1] + (path.end[1] - path.start[1]) * progress;
+
+      // Directly update the map with simulated data
+      handleVehicleUpdate({ vehicle_id: parseInt(vid), latitude: lat, longitude: lng });
 
       // Send data to backend
       fetch('http://localhost:3000/api/gps', {
@@ -141,6 +145,19 @@ function handleVehicleUpdate(data) {
     markers[vid]._lastLatLng = latlng;
   }
 
+  /* UPDATE TRAIL */
+  if (!vehicleTrails[vid]) {
+    vehicleTrails[vid] = [];
+  }
+  vehicleTrails[vid].push([data.latitude, data.longitude]);
+  if (vehicleTrails[vid].length > 1) {
+    if (!markers[vid]._trail) {
+      markers[vid]._trail = L.polyline(vehicleTrails[vid], {color: 'blue', weight: 2, dashArray: '5 5'}).addTo(map);
+    } else {
+      markers[vid]._trail.setLatLngs(vehicleTrails[vid]);
+    }
+  }
+
   /* UPDATE POPUP */
   updatePopup(vid);
 
@@ -154,7 +171,7 @@ function handleVehicleUpdate(data) {
 /* WEBSOCKET */
 /* ===================== */
 
-const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2MjEyMzEsInVzZXJfaWQiOjF9.0GeMAl0aC1cvnW1Lf62ML53l3VGVRXdHVyyDuq-3xOk";
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA4NzM2NDIsInVzZXJfaWQiOjF9.vwSPTAUfSEQHZ1R0JVpeLiWskWWPey0CpmrP2FaSM5Q";
 
 const ws = new WebSocket(
  `ws://localhost:3000/ws?token=${TOKEN}`
