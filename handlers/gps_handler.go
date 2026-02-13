@@ -8,16 +8,18 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
 	"github.com/iqbal2604/vehicle-tracking-api/logs"
 	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
+	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )
 
 type GPSHandler struct {
 	service    services.GPSService
+	userRepo   *repositories.UserRepository
 	logService logs.LogService
 }
 
-func NewGPSHandler(service services.GPSService, logService logs.LogService) *GPSHandler {
-	return &GPSHandler{service: service, logService: logService}
+func NewGPSHandler(service services.GPSService, userRepo *repositories.UserRepository, logService logs.LogService) *GPSHandler {
+	return &GPSHandler{service: service, userRepo: userRepo, logService: logService}
 }
 
 func (h *GPSHandler) CreateLocation(c *fiber.Ctx) error {
@@ -47,7 +49,19 @@ func (h *GPSHandler) GetLastLocation(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Vehicle ID")
 	}
 
-	loc, err := h.service.GetLastLocation(userID, uint(id))
+	// Check if user is admin
+	user, err := h.userRepo.FindByID(userID)
+	if err != nil {
+		return helpers.ErrorResponse(c, 500, "Failed to check user role")
+	}
+
+	var loc *models.GPSLocation
+	if user.Role == "admin" {
+		loc, err = h.service.GetLastLocationAdmin(uint(id))
+	} else {
+		loc, err = h.service.GetLastLocation(userID, uint(id))
+	}
+
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
@@ -63,7 +77,20 @@ func (h *GPSHandler) GetHistory(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Vehicle ID")
 	}
 	vehicleID := uint(id)
-	locations, err := h.service.GetHistory(userID, vehicleID)
+
+	// Check if user is admin
+	user, err := h.userRepo.FindByID(userID)
+	if err != nil {
+		return helpers.ErrorResponse(c, 500, "Failed to check user role")
+	}
+
+	var locations []models.GPSLocation
+	if user.Role == "admin" {
+		locations, err = h.service.GetHistoryAdmin(vehicleID)
+	} else {
+		locations, err = h.service.GetHistory(userID, vehicleID)
+	}
+
 	if err != nil {
 		return helpers.ErrorResponse(c, 404, err.Error())
 	}

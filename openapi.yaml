@@ -215,6 +215,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GPSResponse'
+    LogResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: "user"
+        action:
+          type: string
+          example: "login"
+        user_id:
+          type: integer
+          nullable: true
+          example: 1
+        target_id:
+          type: integer
+          nullable: true
+          example: null
+        meta:
+          type: string
+          example: "Additional metadata"
+        ip_address:
+          type: string
+          example: "192.168.1.1"
+        created-at:
+          type: string
+          format: date-time
+          example: "2023-10-01T12:00:00Z"
 paths:
   /register:
     post:
@@ -493,6 +523,42 @@ paths:
                 type: string
         '400':
           description: Invalid Vehicle ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /logs:
+    get:
+      summary: Get recent logs
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: Number of logs to retrieve
+      responses:
+        '200':
+          description: List of recent logs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LogResponse'
+        '400':
+          description: Invalid limit parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to retrieve logs
           content:
             application/json:
               schema:

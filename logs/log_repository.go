@@ -21,6 +21,6 @@ func (r *logRepository) Create(log *Log) error {
 
 func (r *logRepository) FindAll(limit int) ([]Log, error) {
 	var logs []Log
-	err := r.DB.Order("created_at desc").Limit(limit).Find(&logs).Error
+	err := r.DB.Preload("User").Order("created_at desc").Limit(limit).Find(&logs).Error
 	return logs, err
 }

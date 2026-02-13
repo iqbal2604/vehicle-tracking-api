@@ -75,3 +75,11 @@ func (s *GPSServiceImpl) GetVehicleStatus(userID, vehicleID uint) (string, error
 	}
 	return "offline", nil
 }
+
+func (s *GPSServiceImpl) GetLastLocationAdmin(vehicleID uint) (*models.GPSLocation, error) {
+	return s.gpsRepo.GetLastByVehicleID(vehicleID)
+}
+
+func (s *GPSServiceImpl) GetHistoryAdmin(vehicleID uint) ([]models.GPSLocation, error) {
+	return s.gpsRepo.GetHistory(vehicleID)
+}

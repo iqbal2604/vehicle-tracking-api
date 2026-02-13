@@ -52,9 +52,10 @@ func InitializedGPSHandler() *GPSComponents {
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	hub := websocket.NewHub()
 	gpsService := services.NewGPSService(gpsRepository, vehicleRepository, hub)
+	userRepository := repositories.NewUserRepository(db)
 	logRepository := logs.NewLogRepository(db)
 	logService := logs.NewLogServiceImpl(logRepository)
-	gpsHandler := handlers.NewGPSHandler(gpsService, logService)
+	gpsHandler := handlers.NewGPSHandler(gpsService, userRepository, logService)
 	gpsComponents := &GPSComponents{
 		Handler: gpsHandler,
 		Hub:     hub,
