@@ -23,6 +23,7 @@ func InitializeUserHandler() *handlers.UserHandler {
 	wire.Build(
 		config.NewDatabase,
 		repositories.NewUserRepository,
+		repositories.NewTokenBlacklistRepository,
 		services.NewUserService,
 		handlers.NewUserHandler,
 	)
@@ -35,6 +36,7 @@ func InitializeAuthHandler() *handlers.AuthHandler {
 		logs.NewLogRepository,
 		logs.NewLogServiceImpl,
 		repositories.NewUserRepository,
+		repositories.NewTokenBlacklistRepository,
 		services.NewUserService,
 		handlers.NewAuthHandler,
 	)
@@ -60,6 +62,7 @@ func InitializedGPSHandler() *GPSComponents {
 		config.NewDatabase,
 		logs.NewLogRepository,
 		logs.NewLogServiceImpl,
+		repositories.NewUserRepository,
 		repositories.NewGPSRepository,
 		repositories.NewVehicleRepository,
 		services.NewGPSService,

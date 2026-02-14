@@ -1,6 +1,6 @@
 package services
 
-import models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
+import "github.com/iqbal2604/vehicle-tracking-api/models"
 
 type GPSService interface {
 	CreateLocation(userID uint, loc *models.GPSLocation) error

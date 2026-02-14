@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
+	"github.com/iqbal2604/vehicle-tracking-api/models"
 	"gorm.io/gorm"
 )
 

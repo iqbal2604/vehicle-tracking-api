@@ -3,7 +3,7 @@ package logs
 import (
 	"time"
 
-	domain "github.com/iqbal2604/vehicle-tracking-api/models/domain"
+	"github.com/iqbal2604/vehicle-tracking-api/models"
 )
 
 type Log struct {
@@ -11,7 +11,7 @@ type Log struct {
 	Type      string `gorm:"size:50"`
 	Action    string `gorm:"size:100"`
 	UserID    *uint
-	User      domain.User `gorm:foreignKey:UserID`
+	User      models.User `gorm:"foreignKey:UserID"`
 	TargetID  *uint
 	Meta      string `gorm:"type:text"`
 	IPAddress string `gorm:"size:45"`

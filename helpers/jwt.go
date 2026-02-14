@@ -2,12 +2,23 @@ package helpers
 
 import (
 	"errors"
+	"os"
+	"strings"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/iqbal2604/vehicle-tracking-api/models"
+	"gorm.io/gorm"
 )
 
-var jwtSecret = []byte("rahasia123")
+func getJWTSecret() []byte {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		return []byte("rahasia123")
+	}
+	return []byte(secret)
+}
 
 type JWTClaims struct {
 	UserID uint `json:"user_id"`
@@ -23,7 +34,7 @@ func GenerateToken(userID uint) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	return token.SignedString(jwtSecret)
+	return token.SignedString(getJWTSecret())
 }
 
 func ValidateJWT(tokenString string) (*JWTClaims, error) {
@@ -31,7 +42,7 @@ func ValidateJWT(tokenString string) (*JWTClaims, error) {
 		tokenString,
 		&JWTClaims{},
 		func(t *jwt.Token) (interface{}, error) {
-			return jwtSecret, nil
+			return getJWTSecret(), nil
 		},
 	)
 	if err != nil {
@@ -43,4 +54,55 @@ func ValidateJWT(tokenString string) (*JWTClaims, error) {
 		return nil, errors.New("Invalid Token")
 	}
 	return claims, nil
+}
+
+func JWTMiddleware(db *gorm.DB) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		authHeader := c.Get("Authorization")
+		if authHeader == "" {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Unauthorized",
+			})
+		}
+
+		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+
+		token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+			return getJWTSecret(), nil
+		})
+
+		if err != nil || !token.Valid {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Invalid Token",
+			})
+		}
+
+		// Check if token is blacklisted
+		var count int64
+		db.Model(&models.TokenBlacklist{}).Where("token = ?", tokenString).Count(&count)
+		if count > 0 {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Token is Blacklisted",
+			})
+		}
+
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Invalid token claims",
+			})
+		}
+
+		userIDFloat, ok := claims["user_id"].(float64)
+		if !ok {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": "Invalid user_id in token",
+			})
+		}
+
+		userID := uint(userIDFloat)
+		c.Locals("user_id", userID)
+
+		return c.Next()
+	}
 }

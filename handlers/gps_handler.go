@@ -7,7 +7,7 @@ import (
 	"github.com/iqbal2604/vehicle-tracking-api/dtos"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
 	"github.com/iqbal2604/vehicle-tracking-api/logs"
-	models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
+	"github.com/iqbal2604/vehicle-tracking-api/models"
 	"github.com/iqbal2604/vehicle-tracking-api/repositories"
 	"github.com/iqbal2604/vehicle-tracking-api/services"
 )

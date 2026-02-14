@@ -1,6 +1,6 @@
 package dtos
 
-import models "github.com/iqbal2604/vehicle-tracking-api/models/domain"
+import "github.com/iqbal2604/vehicle-tracking-api/models"
 
 type UserResponse struct {
 	ID    uint   `json:"id"`

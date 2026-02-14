@@ -5,8 +5,8 @@
 # Content-Type: application/json
 
 # {
-#     "name":"Varka",
-#     "email":"varka@admin.com",
+#     "name":"Nicole",
+#     "email":"nicole@gmail.com",
 #     "password":"secret"
 # }
 
@@ -19,7 +19,7 @@
 
 
 # {
-#     "email":"columbina@gmail.com",
+#     "email":"nicole@gmail.com",
 #     "password":"secret"
 # }
 
@@ -35,7 +35,7 @@
 #POST VEHICLES
 
 # POST http://localhost:3000/api/vehicles
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA4NzExNDgsInVzZXJfaWQiOjR9.bdGolbgKPBwMbb8cQ49HnPQIHsSPg1ywE4mPLFviAm8
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzEwNTczNzksInVzZXJfaWQiOjZ9.k-Sh3kDZDelGerycw-0TxDBdQ8XW4Ec26Vax0fu_lDs
 # Content-Type: application/json
 
 # {
@@ -57,16 +57,16 @@
 
 #POST GPS VEHICLES
 
-POST http://localhost:3000/api/gps
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA5Njk5NzUsInVzZXJfaWQiOjF9.lYS_mQJr-YZFtDM1D8DltCTECP2BfWfd8AP0esYrfDM
-Content-Type: application/json
+# POST http://localhost:3000/api/gps
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA5Njk5NzUsInVzZXJfaWQiOjF9.lYS_mQJr-YZFtDM1D8DltCTECP2BfWfd8AP0esYrfDM
+# Content-Type: application/json
 
-{
-    "vehicle_id": 1,
-    "latitude": 4.800,
-    "longitude": 120.4172,
-    "speed": 200.3
-}
+# {
+#     "vehicle_id": 1,
+#     "latitude": 4.800,
+#     "longitude": 120.4172,
+#     "speed": 200.3
+# }
 
 # POST http://localhost:3000/api/gps
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA2MjEyMzEsInVzZXJfaWQiOjF9.0GeMAl0aC1cvnW1Lf62ML53l3VGVRXdHVyyDuq-3xOk

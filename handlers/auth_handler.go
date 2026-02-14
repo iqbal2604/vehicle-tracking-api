@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/iqbal2604/vehicle-tracking-api/helpers"
 	"github.com/iqbal2604/vehicle-tracking-api/logs"
@@ -25,13 +27,13 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Request")
 	}
 
-	err := h.service.Register(req.Name, req.Email, req.Password, req.Role)
+	user, err := h.service.Register(req.Name, req.Email, req.Password, req.Role)
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
 
 	ip := c.IP()
-	h.logService.LogAuth("register", nil, "User Registered:"+req.Email, ip)
+	h.logService.LogAuth("register", &user.ID, "User Registered:"+req.Email, ip)
 
 	return helpers.SuccessResponse(c, fiber.Map{
 		"status":  201,
@@ -46,17 +48,35 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Request")
 	}
 
-	token, err := h.service.Login(req.Email, req.Password)
+	token, userID, err := h.service.Login(req.Email, req.Password)
 	if err != nil {
 		return helpers.ErrorResponse(c, 400, err.Error())
 	}
 
 	ip := c.IP()
-	h.logService.LogAuth("login", nil, "User Logged in: "+req.Email, ip)
+	h.logService.LogAuth("login", &userID, "User Logged in: "+req.Email, ip)
 
 	return helpers.SuccessResponse(c, fiber.Map{
 		"message": "Login Success",
 		"token":   token,
 	})
 
+}
+
+func (h *AuthHandler) Logout(c *fiber.Ctx) error {
+	authHeader := c.Get("Authorization")
+	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+	userID := c.Locals("user_id").(uint)
+
+	err := h.service.Logout(tokenString, userID)
+	if err != nil {
+		return helpers.ErrorResponse(c, 500, "Logout Failed")
+	}
+
+	ip := c.IP()
+	h.logService.LogAuth("logout", &userID, "User Logged Out", ip)
+
+	return helpers.SuccessResponse(c, fiber.Map{
+		"message": "Logout Success",
+	})
 }
