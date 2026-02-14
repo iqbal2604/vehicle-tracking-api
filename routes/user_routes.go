@@ -8,6 +8,10 @@ import (
 )
 
 func UserRoutes(router fiber.Router, userHandler *handlers.UserHandler) {
-	// Apply JWT middleware directly to specific route
-	router.Get("/profile", helpers.JWTMiddleware(config.DB), userHandler.GetProfile)
+	protected := router.Group("/profile", helpers.JWTMiddleware(config.DB))
+	protected.Get("", userHandler.GetProfile)
+	protected.Put("", userHandler.UpdateProfile)
+	protected.Delete("", userHandler.DeleteAccount)
+
+	router.Get("/users", helpers.JWTMiddleware(config.DB), userHandler.ListUsers)
 }

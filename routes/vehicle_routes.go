@@ -12,6 +12,7 @@ func VehicleRoutes(router fiber.Router, vehicleHandler *handlers.VehicleHandler)
 
 	protected.Post("", vehicleHandler.CreateVehicle)
 	protected.Get("", vehicleHandler.ListVehicle)
+	protected.Get("/user/:userId", vehicleHandler.ListVehiclesByUserID)
 	protected.Get("/:id", vehicleHandler.GetVehicle)
 	protected.Put("/:id", vehicleHandler.UpdateVehicle)
 	protected.Delete("/:id", vehicleHandler.DeleteVehicle)

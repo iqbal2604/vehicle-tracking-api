@@ -80,8 +80,32 @@ func (s *UserServiceImpl) GetProfile(userID uint) (*models.User, error) {
 	return user, nil
 }
 
+func (s *UserServiceImpl) UpdateProfile(userID uint, name, email string) (*models.User, error) {
+	user, err := s.repo.FindByID(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	user.Name = name
+	user.Email = email
+
+	if err := s.repo.Update(user); err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *UserServiceImpl) DeleteAccount(userID uint) error {
+	return s.repo.Delete(userID)
+}
+
 func (s *UserServiceImpl) Logout(tokenString string, userID uint) error {
 	// For simplicity, we set expiry to 24 hours. Ideally, it should be the same as the JWT expiry.
 	expiresAt := time.Now().Add(24 * time.Hour)
 	return s.tokenRepo.AddToken(tokenString, expiresAt)
+}
+
+func (s *UserServiceImpl) ListAllUsers() ([]models.User, error) {
+	return s.repo.FindAllNonAdmin()
 }

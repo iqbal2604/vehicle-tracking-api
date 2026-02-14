@@ -112,6 +112,34 @@ func (h *VehicleHandler) ListVehicle(c *fiber.Ctx) error {
 	return helpers.SuccessResponse(c, result)
 }
 
+func (h *VehicleHandler) ListVehiclesByUserID(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+	role, err := h.getUserRole(userID)
+	if err != nil {
+		return helpers.ErrorResponse(c, 500, "Failed to get user role")
+	}
+
+	if role != "admin" {
+		return helpers.ErrorResponse(c, 403, "Access Denied")
+	}
+
+	targetUserID, err := strconv.ParseUint(c.Params("userId"), 10, 64)
+	if err != nil {
+		return helpers.ErrorResponse(c, 400, "Invalid User ID")
+	}
+
+	vehicles, err := h.service.ListVehiclesByUser(uint(targetUserID))
+	if err != nil {
+		return helpers.Error(c, err.Error())
+	}
+
+	var result []dtos.VehicleResponse
+	for _, v := range vehicles {
+		result = append(result, dtos.ToVehicleResponse(v))
+	}
+	return helpers.SuccessResponse(c, result)
+}
+
 func (h *VehicleHandler) UpdateVehicle(c *fiber.Ctx) error {
 	idParam := c.Params("id")
 	id, err := strconv.ParseUint(idParam, 10, 64)

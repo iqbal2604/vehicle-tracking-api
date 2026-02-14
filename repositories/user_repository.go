@@ -36,3 +36,17 @@ func (r *UserRepository) FindByID(id uint) (*models.User, error) {
 	}
 	return &user, nil
 }
+
+func (r *UserRepository) FindAllNonAdmin() ([]models.User, error) {
+	var users []models.User
+	err := r.DB.Where("role != ?", "admin").Find(&users).Error
+	return users, err
+}
+
+func (r *UserRepository) Update(user *models.User) error {
+	return r.DB.Save(user).Error
+}
+
+func (r *UserRepository) Delete(id uint) error {
+	return r.DB.Delete(&models.User{}, id).Error
+}
