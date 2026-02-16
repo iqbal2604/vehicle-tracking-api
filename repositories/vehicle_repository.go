@@ -44,5 +44,11 @@ func (r *VehicleRepository) Update(vehicle *models.Vehicle) error {
 }
 
 func (r *VehicleRepository) Delete(userID uint, id uint) error {
-	return r.DB.Where("id = ? AND user_id = ?", id, userID).Delete(&models.Vehicle{}, id).Error
+	return r.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("vehicle_id = ?", id).Delete(&models.GPSLocation{}).Error; err != nil {
+			return err
+		}
+
+		return tx.Where("id = ? AND user_id = ?", id, userID).Delete(&models.Vehicle{}).Error
+	})
 }

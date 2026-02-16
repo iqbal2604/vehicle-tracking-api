@@ -48,15 +48,22 @@ func (s *LogServiceImpl) LogSystem(action string, meta string) {
 	s.repo.Create(log)
 }
 
-func (s *LogServiceImpl) GetRecent(limit int) ([]LogResponse, error) {
-	logs, err := s.repo.FindAll(limit)
+func (s *LogServiceImpl) GetLogs(page, limit int) ([]LogResponse, int64, error) {
+	offset := (page - 1) * limit
+	logs, err := s.repo.FindAll(limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
+
+	totalCount, err := s.repo.CountAll()
+	if err != nil {
+		return nil, 0, err
+	}
+
 	var response []LogResponse
 	for _, log := range logs {
 		response = append(response, ToLogResponse(log))
 	}
 
-	return response, nil
+	return response, totalCount, nil
 }

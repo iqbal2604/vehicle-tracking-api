@@ -10,5 +10,5 @@ type Vehicle struct {
 	Color  string
 
 	User     User          `gorm:"foreignKey:UserID"`
-	Location []GPSLocation `gorm:"foreignKey:VehicleID"`
+	Location []GPSLocation `gorm:"foreignKey:VehicleID;constraint:OnDelete:CASCADE"`
 }

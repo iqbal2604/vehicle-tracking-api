@@ -22,12 +22,26 @@ func (h *LogHandler) GetRecentLogs(c *fiber.Ctx) error {
 		return helpers.ErrorResponse(c, 400, "Invalid Limit Parameter")
 	}
 
-	logs, err := h.service.GetRecent(limit)
+	pageStr := c.Query("page", "1")
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page <= 0 {
+		return helpers.ErrorResponse(c, 400, "Invalid Page Parameter")
+	}
+
+	logs, totalCount, err := h.service.GetLogs(page, limit)
 	if err != nil {
 		return helpers.ErrorResponse(c, 500, "Failed to Retrieve Log")
 	}
 
+	totalPages := 0
+	if totalCount > 0 {
+		totalPages = int((totalCount + int64(limit) - 1) / int64(limit))
+	}
+
 	return helpers.SuccessResponse(c, fiber.Map{
-		"logs": logs,
+		"logs":        logs,
+		"totalCount":  totalCount,
+		"totalPages":  totalPages,
+		"currentPage": page,
 	})
 }
