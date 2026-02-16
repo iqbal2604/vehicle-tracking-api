@@ -87,6 +87,46 @@ components:
           example: "Profile retrieved"
         data:
           $ref: '#/components/schemas/UserResponse'
+    LogoutResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Logout Success"
+    UpdateProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Muhammad Iqbal"
+        email:
+          type: string
+          format: email
+          example: "mmuhammadiqbal963@gmail.com"
+    UpdateProfileResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Profile updated"
+        data:
+          $ref: '#/components/schemas/UserResponse'
+    DeleteProfileResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Account deleted successfully"
+    UsersResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Users retrieved"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
     VehicleRequest:
       type: object
       required:
