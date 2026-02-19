@@ -20,7 +20,8 @@ import (
 func InitializeUserHandler() *handlers.UserHandler {
 	db := config.NewDatabase()
 	userRepository := repositories.NewUserRepository(db)
-	tokenBlacklistRepository := repositories.NewTokenBlacklistRepository(db)
+	client := config.NewRedisClient()
+	tokenBlacklistRepository := repositories.NewTokenBlacklistRepository(client)
 	userService := services.NewUserService(userRepository, tokenBlacklistRepository)
 	userHandler := handlers.NewUserHandler(userService)
 	return userHandler
@@ -29,7 +30,8 @@ func InitializeUserHandler() *handlers.UserHandler {
 func InitializeAuthHandler() *handlers.AuthHandler {
 	db := config.NewDatabase()
 	userRepository := repositories.NewUserRepository(db)
-	tokenBlacklistRepository := repositories.NewTokenBlacklistRepository(db)
+	client := config.NewRedisClient()
+	tokenBlacklistRepository := repositories.NewTokenBlacklistRepository(client)
 	userService := services.NewUserService(userRepository, tokenBlacklistRepository)
 	logRepository := logs.NewLogRepository(db)
 	logService := logs.NewLogServiceImpl(logRepository)

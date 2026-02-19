@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"context"
 	"errors"
 	"os"
 	"strings"
@@ -8,8 +9,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/iqbal2604/vehicle-tracking-api/models"
-	"gorm.io/gorm"
+	"github.com/redis/go-redis/v9"
 )
 
 func getJWTSecret() []byte {
@@ -56,7 +56,7 @@ func ValidateJWT(tokenString string) (*JWTClaims, error) {
 	return claims, nil
 }
 
-func JWTMiddleware(db *gorm.DB) fiber.Handler {
+func JWTMiddleware(rdb *redis.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		authHeader := c.Get("Authorization")
 		if authHeader == "" {
@@ -78,12 +78,13 @@ func JWTMiddleware(db *gorm.DB) fiber.Handler {
 		}
 
 		// Check if token is blacklisted
-		var count int64
-		db.Model(&models.TokenBlacklist{}).Where("token = ?", tokenString).Count(&count)
-		if count > 0 {
+		ctx := context.Background()
+		val, err := rdb.Exists(ctx, tokenString).Result()
+		if err == nil && val > 0 {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 				"error": "Token is Blacklisted",
 			})
+
 		}
 
 		claims, ok := token.Claims.(jwt.MapClaims)

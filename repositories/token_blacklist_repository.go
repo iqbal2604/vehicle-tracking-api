@@ -1,35 +1,33 @@
 package repositories
 
 import (
+	"context"
 	"time"
 
-	"github.com/iqbal2604/vehicle-tracking-api/models"
-	"gorm.io/gorm"
+	"github.com/redis/go-redis/v9"
 )
 
 type TokenBlacklistRepository struct {
-	DB *gorm.DB
+	Redis *redis.Client
 }
 
-func NewTokenBlacklistRepository(db *gorm.DB) *TokenBlacklistRepository {
+func NewTokenBlacklistRepository(rdb *redis.Client) *TokenBlacklistRepository {
 	return &TokenBlacklistRepository{
-		DB: db,
+		Redis: rdb,
 	}
 }
 
 func (r *TokenBlacklistRepository) AddToken(token string, expiresAt time.Time) error {
-	blacklist := models.TokenBlacklist{
-		Token:     token,
-		ExpiresAt: expiresAt,
-	}
-	return r.DB.Create(&blacklist).Error
+	ctx := context.Background()
+	duration := time.Until(expiresAt)
+	return r.Redis.Set(ctx, token, "blacklisted", duration).Err()
 }
 
 func (r *TokenBlacklistRepository) IsTokenBlacklisted(token string) (bool, error) {
-	var count int64
-	err := r.DB.Model(&models.TokenBlacklist{}).Where("token = ?", token).Count(&count).Error
+	ctx := context.Background()
+	val, err := r.Redis.Exists(ctx, token).Result()
 	if err != nil {
 		return false, err
 	}
-	return count > 0, nil
+	return val > 0, nil
 }

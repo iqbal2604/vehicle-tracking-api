@@ -22,6 +22,9 @@ func main() {
 		log.Fatal("DB Connection Failed")
 	}
 
+	rdb := config.NewRedisClient()
+	defer rdb.Close()
+
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
@@ -43,11 +46,11 @@ func main() {
 	api := app.Group("/api")
 
 	//Routes
-	routes.VehicleRoutes(api, vehicleHandler)
-	routes.AuthRoutes(api, authHandler)
-	routes.UserRoutes(api, userHandler)
-	routes.GPSRoute(api, gpsApp.Handler)
-	routes.LogRoute(api, logHandler)
+	routes.VehicleRoutes(api, vehicleHandler, rdb)
+	routes.AuthRoutes(api, authHandler, rdb)
+	routes.UserRoutes(api, userHandler, rdb)
+	routes.GPSRoute(api, gpsApp.Handler, rdb)
+	routes.LogRoute(api, logHandler, rdb)
 	routes.WebsocketRoutes(app, gpsApp.Hub)
 
 	port := os.Getenv("PORT")

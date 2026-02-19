@@ -22,6 +22,7 @@ type GPSComponents struct {
 func InitializeUserHandler() *handlers.UserHandler {
 	wire.Build(
 		config.NewDatabase,
+		config.NewRedisClient,
 		repositories.NewUserRepository,
 		repositories.NewTokenBlacklistRepository,
 		services.NewUserService,
@@ -33,6 +34,7 @@ func InitializeUserHandler() *handlers.UserHandler {
 func InitializeAuthHandler() *handlers.AuthHandler {
 	wire.Build(
 		config.NewDatabase,
+		config.NewRedisClient,
 		logs.NewLogRepository,
 		logs.NewLogServiceImpl,
 		repositories.NewUserRepository,

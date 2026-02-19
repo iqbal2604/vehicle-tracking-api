@@ -50,14 +50,33 @@ func (s *LogServiceImpl) LogSystem(action string, meta string) {
 
 func (s *LogServiceImpl) GetLogs(page, limit int) ([]LogResponse, int64, error) {
 	offset := (page - 1) * limit
-	logs, err := s.repo.FindAll(limit, offset)
-	if err != nil {
-		return nil, 0, err
+
+	var logs []Log
+	var totalCounts int64
+	var errLogs, errCount error
+
+	done := make(chan bool, 2)
+
+	go func() {
+		logs, errLogs = s.repo.FindAll(limit, offset)
+		done <- true
+	}()
+
+	go func() {
+		totalCounts, errCount = s.repo.CountAll()
+		done <- true
+	}()
+
+	for i := 0; i < 2; i++ {
+		<-done
 	}
 
-	totalCount, err := s.repo.CountAll()
-	if err != nil {
-		return nil, 0, err
+	if errLogs != nil {
+		return nil, 0, errLogs
+	}
+
+	if errCount != nil {
+		return nil, 0, errCount
 	}
 
 	var response []LogResponse
@@ -65,5 +84,6 @@ func (s *LogServiceImpl) GetLogs(page, limit int) ([]LogResponse, int64, error) 
 		response = append(response, ToLogResponse(log))
 	}
 
-	return response, totalCount, nil
+	return response, totalCounts, nil
+
 }
