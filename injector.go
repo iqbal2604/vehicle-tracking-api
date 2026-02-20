@@ -48,6 +48,7 @@ func InitializeAuthHandler() *handlers.AuthHandler {
 func InitializeVehicleHandler() *handlers.VehicleHandler {
 	wire.Build(
 		config.NewDatabase,
+		config.NewRedisClient,
 		logs.NewLogRepository,
 		logs.NewLogServiceImpl,
 		repositories.NewUserRepository,
@@ -62,6 +63,7 @@ func InitializedGPSHandler() *GPSComponents {
 	wire.Build(
 
 		config.NewDatabase,
+		config.NewRedisClient,
 		logs.NewLogRepository,
 		logs.NewLogServiceImpl,
 		repositories.NewUserRepository,

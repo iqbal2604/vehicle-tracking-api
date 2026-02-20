@@ -16,7 +16,7 @@ A robust backend REST API for a vehicle tracking system built with Golang and th
 
 - **Language**: Go 1.25.5
 - **Framework**: Fiber v2.52.10
-- **Database**: MySQL (via GORM)
+- **Database**: MySQL (via GORM) , Redis
 - **Authentication**: JWT (golang-jwt/jwt/v5)
 - **WebSockets**: Fiber WebSocket v2.2.1
 - **Dependency Injection**: Google Wire
@@ -39,6 +39,7 @@ A robust backend REST API for a vehicle tracking system built with Golang and th
    Create a `.env` file or set environment variables for:
    - Database connection (e.g., `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`)
    - JWT secret: `JWT_SECRET`
+   - Redis connection (e.g., `REDIS_HOST`, `REDIS_PORT`, `REDIS_PASSWORD`, `REDIS_DB`)
 
 4. Run the application:
    ```bash
