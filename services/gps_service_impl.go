@@ -82,14 +82,28 @@ func (s *GPSServiceImpl) GetHistory(userID uint, vehicleID uint) ([]models.GPSLo
 }
 
 func (s *GPSServiceImpl) GetVehicleStatus(userID, vehicleID uint) (string, error) {
-	loc, err := s.gpsRepo.GetLastByVehicleID(vehicleID)
+	ctx := context.Background()
+	cacheKey := fmt.Sprintf("vehicle:last:%d", vehicleID)
+	var lastloc models.GPSLocation
+
+	cacheData, err := s.rdb.Get(ctx, cacheKey).Result()
 	if err != nil {
-		return "offline", nil
+		json.Unmarshal([]byte(cacheData), &lastloc)
+	} else {
+		loc, err := s.gpsRepo.GetLastByVehicleID(vehicleID)
+		if err != nil {
+			return "offline", nil
+		}
+		if loc == nil {
+			return "offline", nil
+		}
+		lastloc = *loc
 	}
-	if time.Since(loc.CreatedAt) <= 30*time.Second {
+	if time.Since(lastloc.CreatedAt) <= 30*time.Second {
 		return "online", nil
 	}
 	return "offline", nil
+
 }
 
 func (s *GPSServiceImpl) GetLastLocationAdmin(vehicleID uint) (*models.GPSLocation, error) {
