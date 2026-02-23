@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Service untuk aplikasi Go
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db       # Nama service database
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=vehicle_tracking
+      - REDIS_HOST=redis # Nama service redis
+      - REDIS_PORT=6379
+      - PORT=3000
+    depends_on:
+      - db
+      - redis
+
+  # Service untuk MySQL
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=vehicle_tracking
+    ports:
+      - "3306:3306"
+
+  # Service untuk Redis
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"

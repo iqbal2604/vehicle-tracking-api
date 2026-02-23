@@ -57,5 +57,5 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
-	app.Listen("localhost:" + port)
+	app.Listen(":" + port)
 }
