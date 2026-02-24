@@ -13,4 +13,9 @@ func GPSRoute(router fiber.Router, gpsHandler *handlers.GPSHandler, rdb *redis.C
 	protected.Post("/", gpsHandler.CreateLocation)
 	protected.Get("/history/:vehicle_id", gpsHandler.GetHistory)
 	protected.Get("/last/:vehicle_id", gpsHandler.GetLastLocation)
+
+	protected.Post("/geofences", gpsHandler.CreateGeofence)
+	protected.Get("/geofences", gpsHandler.ListGeofences)
+	protected.Delete("/geofences/:id", gpsHandler.DeleteGeofences)
+
 }

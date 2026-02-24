@@ -24,7 +24,7 @@ func ConnectDatabase() error {
 
 	DB = db
 
-	DB.AutoMigrate(&models.User{}, &models.Vehicle{}, &models.GPSLocation{}, &logs.Log{}, &models.TokenBlacklist{})
+	DB.AutoMigrate(&models.User{}, &models.Vehicle{}, &models.GPSLocation{}, &logs.Log{}, &models.TokenBlacklist{}, &models.Geofence{})
 	return nil
 
 }

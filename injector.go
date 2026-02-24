@@ -69,6 +69,7 @@ func InitializedGPSHandler() *GPSComponents {
 		repositories.NewUserRepository,
 		repositories.NewGPSRepository,
 		repositories.NewVehicleRepository,
+		repositories.NewGeofenceRepository,
 		services.NewGPSService,
 		handlers.NewGPSHandler,
 		websocket.NewHub,

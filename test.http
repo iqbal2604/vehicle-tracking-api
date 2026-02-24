@@ -19,8 +19,8 @@
 
 
 # {
-#     "email":"balea@gmail.com",
-#     "password":"duaenam042000"
+#     "email":"nicole@gmail.com",
+#     "password":"secret"
 # }
 
 
@@ -35,7 +35,7 @@
 #POST VEHICLES
 
 # POST http://localhost:3000/api/vehicles
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzEwNTczNzksInVzZXJfaWQiOjZ9.k-Sh3kDZDelGerycw-0TxDBdQ8XW4Ec26Vax0fu_lDs
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ
 # Content-Type: application/json
 
 # {
@@ -100,3 +100,24 @@
 
 # GET http://localhost:3000/api/logs
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzA4MTEwODQsInVzZXJfaWQiOjN9.AKiy3mct1T1g4rElvc9BWz7YFB8LpEjSAnB_PaVMQmQ
+
+## CREATE GEOFENCE
+# POST http://localhost:3000/api/gps/geofences
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ
+# Content-Type: application/json
+
+# {
+#     "name": "Area Monas",
+#     "latitude": -6.175392,
+#     "longitude": 106.827153,
+#     "radius": 500.0,
+#     "type": "safe_zone"
+# }
+
+### LIST GEOFENCES
+# GET http://localhost:3000/api/gps/geofences
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ
+
+### DELETE GEOFENCE
+DELETE http://localhost:3000/api/gps/geofences/:id
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ

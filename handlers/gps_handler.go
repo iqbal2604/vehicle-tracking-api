@@ -109,3 +109,53 @@ func (h *GPSHandler) GetHistory(c *fiber.Ctx) error {
 	}
 	return helpers.SuccessResponse(c, response)
 }
+
+func (h *GPSHandler) CreateGeofence(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+	var req dtos.GeofenceRequest
+
+	if err := c.BodyParser(&req); err != nil {
+		return helpers.ErrorResponse(c, 400, "Input tidak valid")
+	}
+
+	geofence := models.Geofence{
+		Name:      req.Name,
+		Latitude:  req.Latitude,
+		Longitude: req.Longitude,
+		Radius:    req.Radius,
+		Type:      req.Type,
+		UserID:    userID,
+	}
+
+	if err := h.service.CreateGeofence(&geofence); err != nil {
+		return helpers.ErrorResponse(c, 500, err.Error())
+	}
+
+	return helpers.SuccessResponse(c, dtos.ToGeofenceResponse(geofence))
+}
+
+func (h *GPSHandler) ListGeofences(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+	geofences, err := h.service.ListGeofences(userID)
+
+	if err != nil {
+		return helpers.ErrorResponse(c, 500, err.Error())
+	}
+
+	return helpers.SuccessResponse(c, dtos.ToGeofenceListResponse(geofences))
+}
+
+func (h *GPSHandler) DeleteGeofences(c *fiber.Ctx) error {
+	userID := c.Locals("user_id").(uint)
+	id, err := c.ParamsInt("id")
+
+	if err != nil {
+		return helpers.ErrorResponse(c, 400, "ID tidak Valid")
+	}
+
+	if err := h.service.DeleteGeofence(uint(id), userID); err != nil {
+		return helpers.ErrorResponse(c, 500, err.Error())
+	}
+
+	return helpers.SuccessResponse(c, fiber.Map{"message": "Geofence berhasil dihapus"})
+}
