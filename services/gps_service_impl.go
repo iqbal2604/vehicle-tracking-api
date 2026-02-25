@@ -76,13 +76,13 @@ func (s *GPSServiceImpl) GetLastLocation(userID uint, vehicleID uint) (*models.G
 	return s.gpsRepo.GetLastByVehicleID(vehicleID)
 }
 
-func (s *GPSServiceImpl) GetHistory(userID uint, vehicleID uint) ([]models.GPSLocation, error) {
+func (s *GPSServiceImpl) GetHistory(userID uint, vehicleID uint, start, end string) ([]models.GPSLocation, error) {
 	_, err := s.vehicleRepo.FindByID(userID, vehicleID)
 	if err != nil {
 		return nil, errors.New("Vehicle Not Found")
 	}
 
-	return s.gpsRepo.GetHistory(vehicleID)
+	return s.gpsRepo.GetHistory(vehicleID, start, end)
 }
 
 func (s *GPSServiceImpl) GetVehicleStatus(userID, vehicleID uint) (string, error) {
@@ -114,8 +114,8 @@ func (s *GPSServiceImpl) GetLastLocationAdmin(vehicleID uint) (*models.GPSLocati
 	return s.gpsRepo.GetLastByVehicleID(vehicleID)
 }
 
-func (s *GPSServiceImpl) GetHistoryAdmin(vehicleID uint) ([]models.GPSLocation, error) {
-	return s.gpsRepo.GetHistory(vehicleID)
+func (s *GPSServiceImpl) GetHistoryAdmin(vehicleID uint, start, end string) ([]models.GPSLocation, error) {
+	return s.gpsRepo.GetHistory(vehicleID, start, end)
 }
 
 func (s *GPSServiceImpl) CreateGeofence(geofence *models.Geofence) error {

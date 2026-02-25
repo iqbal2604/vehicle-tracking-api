@@ -78,6 +78,10 @@ func (h *GPSHandler) GetHistory(c *fiber.Ctx) error {
 	}
 	vehicleID := uint(id)
 
+	//Ambil query parameter start dan end
+	start := c.Query("start")
+	end := c.Query("end")
+
 	// Check if user is admin
 	user, err := h.userRepo.FindByID(userID)
 	if err != nil {
@@ -86,9 +90,9 @@ func (h *GPSHandler) GetHistory(c *fiber.Ctx) error {
 
 	var locations []models.GPSLocation
 	if user.Role == "admin" {
-		locations, err = h.service.GetHistoryAdmin(vehicleID)
+		locations, err = h.service.GetHistoryAdmin(vehicleID, start, end)
 	} else {
-		locations, err = h.service.GetHistory(userID, vehicleID)
+		locations, err = h.service.GetHistory(userID, vehicleID, start, end)
 	}
 
 	if err != nil {

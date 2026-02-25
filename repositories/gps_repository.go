@@ -30,14 +30,16 @@ func (r *GPSRepository) GetLastByVehicleID(vehicleID uint) (*models.GPSLocation,
 }
 
 // Ambil History Lokasi
-func (r *GPSRepository) GetHistory(vehicleID uint) ([]models.GPSLocation, error) {
+func (r *GPSRepository) GetHistory(vehicleID uint, start string, end string) ([]models.GPSLocation, error) {
 	var locations []models.GPSLocation
 
-	err := r.DB.Where("vehicle_id = ?", vehicleID).Order("created_at asc").Find(&locations).Error
+	query := r.DB.Where("vehicle_id = ?", vehicleID)
 
-	if err != nil {
-		return nil, err
+	if start != "" && end != "" {
+		query = query.Where("created_at BETWEEN ? AND ?", start, end)
 	}
 
-	return locations, nil
+	err := query.Order("created_at asc").Find(&locations).Error
+
+	return locations, err
 }

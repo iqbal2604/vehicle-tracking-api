@@ -6,7 +6,7 @@ type GPSService interface {
 	//GPS Tracking
 	CreateLocation(userID uint, loc *models.GPSLocation) error
 	GetLastLocation(userID uint, vehicleID uint) (*models.GPSLocation, error)
-	GetHistory(userID uint, vehicleID uint) ([]models.GPSLocation, error)
+	GetHistory(userID uint, vehicleID uint, start string, end string) ([]models.GPSLocation, error)
 	GetVehicleStatus(userID, vehicleID uint) (string, error)
 
 	//Geofence Management
@@ -16,5 +16,5 @@ type GPSService interface {
 
 	// Admin methods (bypass ownership check)
 	GetLastLocationAdmin(vehicleID uint) (*models.GPSLocation, error)
-	GetHistoryAdmin(vehicleID uint) ([]models.GPSLocation, error)
+	GetHistoryAdmin(vehicleID uint, start string, end string) ([]models.GPSLocation, error)
 }
