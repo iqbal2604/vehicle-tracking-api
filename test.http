@@ -19,8 +19,8 @@
 
 
 # {
-#     "email":"nicole@gmail.com",
-#     "password":"secret"
+#     "email":"senku@gmail.com",
+#     "password":"senku"
 # }
 
 
@@ -103,7 +103,7 @@
 
 ## CREATE GEOFENCE
 # POST http://localhost:3000/api/gps/geofences
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwODY1NDQsInVzZXJfaWQiOjN9.XAqkklT-9SHBSrUhrVevheS_iSVHSaOUtjomKdFAruA
 # Content-Type: application/json
 
 # {
@@ -119,5 +119,5 @@
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ
 
 ### DELETE GEOFENCE
-# DELETE http://localhost:3000/api/gps/geofences/:id
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwMTQ4MjIsInVzZXJfaWQiOjF9.psKTSxVv5YM2yXIyEMfSSKi4QJx58GrWMWy8SU9PvOQ
+DELETE http://localhost:3000/api/gps/geofences/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIwODY1NDQsInVzZXJfaWQiOjN9.XAqkklT-9SHBSrUhrVevheS_iSVHSaOUtjomKdFAruA
