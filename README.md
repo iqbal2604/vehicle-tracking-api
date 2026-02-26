@@ -1,3 +1,4 @@
+![CI](https://github.com/iqbal2604/vehicle-tracking-api/actions/workflows/ci.yml/badge.svg)
 # Vehicle Tracking API
 
 A robust backend REST API for a vehicle tracking system built with Golang and the Fiber framework. This API enables real-time vehicle monitoring, user authentication, and GPS data management.
