@@ -1,24 +1,31 @@
-# Gunakan image Golang versi alpine (ringan)
-FROM golang:1.25.5-alpine
+# ---------- STAGE 1: Build ----------
+FROM golang:1.25.5-alpine AS builder
 
-# Set folder kerja di dalam container
 WORKDIR /app
 
-#install air untuk hot reload
-RUN go install github.com/air-verse/air@latest
-
-# Copy file dependency
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy seluruh source code
 COPY . .
 
-# Build aplikasi
-RUN go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
 
-# Expose port yang digunakan
+# ---------- STAGE 2: Run ----------
+FROM alpine:latest
+
+# Buat user baru agar tidak jalan sebagai root (Security Best Practice)
+RUN adduser -D appuser
+WORKDIR /app
+
+RUN apk --no-cache add ca-certificates
+
+COPY --from=builder /app/main .
+
+# Ganti kepemilikan file ke appuser
+RUN chown appuser:appuser /app/main
+
+# Pindah ke user tersebut
+USER appuser
+
 EXPOSE 3000
-
-# Jalankan aplikasi dengan air untuk hot reload
-CMD ["air"]
+CMD ["./main"]

@@ -4,7 +4,7 @@
 //go:build !wireinject
 // +build !wireinject
 
-package main
+package injector
 
 import (
 	"github.com/iqbal2604/vehicle-tracking-api/config"

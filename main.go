@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/iqbal2604/vehicle-tracking-api/config"
+	"github.com/iqbal2604/vehicle-tracking-api/injector"
 	"github.com/iqbal2604/vehicle-tracking-api/routes"
 	"github.com/joho/godotenv"
 )
@@ -32,11 +33,11 @@ func main() {
 	}))
 
 	// Initialize handlers using Wire
-	authHandler := InitializeAuthHandler()
-	userHandler := InitializeUserHandler()
-	vehicleHandler := InitializeVehicleHandler()
-	gpsApp := InitializedGPSHandler()
-	logHandler := InitializeLogHandler()
+	authHandler := injector.InitializeAuthHandler()
+	userHandler := injector.InitializeUserHandler()
+	vehicleHandler := injector.InitializeVehicleHandler()
+	gpsApp := injector.InitializedGPSHandler()
+	logHandler := injector.InitializeLogHandler()
 
 	go gpsApp.Hub.Run()
 
